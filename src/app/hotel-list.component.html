@@ -1,0 +1,24 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Llista d'Hotels</h2>
+
+  <div *ngIf="hotels?.length; else noHotels" class="row">
+    <div class="col-md-4 mb-3" *ngFor="let hotel of hotels">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ hotel?.name }}</h5>
+          <p class="card-text">
+            <strong>Ubicació:</strong> {{ hotel?.location }} <br>
+            <strong>Estrelles:</strong> {{ hotel?.stars }} <br>
+            <strong>Preu per nit:</strong> {{ hotel?.price_per_night | currency }} <br>
+            <strong>Habitacions disponibles:</strong> {{ hotel?.available_rooms }}
+          </p>
+          <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary">Veure detalls</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noHotels>
+    <p class="text-center text-muted">No hi ha hotels disponibles.</p>
+  </ng-template>
+</div>

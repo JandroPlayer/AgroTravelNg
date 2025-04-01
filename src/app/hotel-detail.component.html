@@ -1,0 +1,26 @@
+<div *ngIf="hotel; else loading" class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title text-center">{{ hotel.name }}</h2>
+      <hr>
+      <p><strong>Ubicació:</strong> {{ hotel.location }}</p>
+      <p><strong>Estrelles:</strong> ⭐ {{ hotel.stars }}</p>
+      <p><strong>Preu per nit:</strong> {{ hotel.price_per_night | currency }}</p>
+      <p><strong>Habitacions disponibles:</strong> {{ hotel.available_rooms }}</p>
+      <div class="text-center mt-3">
+        <a routerLink="/hotels" class="btn btn-secondary">⬅️ Tornar a la llista</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregant dades de l'hotel...</span>
+      </div>
+      <p class="mt-2">Carregant dades de l'hotel...</p>
+    </div>
+  </div>
+</ng-template>
