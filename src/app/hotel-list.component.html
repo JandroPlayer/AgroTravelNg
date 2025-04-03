@@ -1,4 +1,39 @@
+<div class="container-fluid">
+  <!-- Menu bar verd -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #28a745;">
+    <a class="navbar-brand" href="#">AgroTravel Mallorca</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#autobuses">Autobusos Elèctrics</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#alojamientos">Alojaments Rurals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#actividades">Activitats Agrícoles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#noticias">Notícies</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<!-- Descripció del projecte -->
 <div class="container mt-4">
+  <div class="project-description mb-4">
+    <h1 class="text-center">Plataforma Integral de Turisme Sostenible a Mallorca</h1>
+    <p class="text-center">
+      Aquest projecte té com a objectiu crear una plataforma digital integral que no només millori l'accessibilitat al transport públic a Mallorca, sinó que també promogui l'agroturisme mitjançant la integració d'hotels rústics i activitats agrícoles. La plataforma permetrà als turistes reservar autobusos des de i cap a l'Aeroport de Palma, descobrir i participar en experiències d'agroturisme a finques i hotels rústics, així com explorar la gastronomia local. Tot això sota un enfocament sostenible, ecològic i culturalment enriquidor.
+    </p>
+  </div>
+
+  <!-- Llista d'Hotels -->
   <h2 class="text-center mb-4">Llista d'Hotels</h2>
 
   <div *ngIf="hotels?.length; else noHotels" class="row">
@@ -18,6 +53,7 @@
     </div>
   </div>
 
+  <!-- Si no hi ha hotels disponibles -->
   <ng-template #noHotels>
     <p class="text-center text-muted">No hi ha hotels disponibles.</p>
   </ng-template>
