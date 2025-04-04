@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+/* Estilo para el snackbar de éxito (verde) */
+.success {
+  background-color: #28a745;  /* Verde */
+  color: white;
+}
+
+/* Estilo para el snackbar de error (rojo) */
+.error {
+  background-color: #dc3545;  /* Rojo */
+  color: white;
+}
