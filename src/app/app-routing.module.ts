@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HotelListComponent } from './hotel-list.component';
-import { HotelDetailComponent } from './hotel-detail.component';
-import { LoginComponent } from './login.component';
-import { RegisterComponent } from './register.component';
+import { HotelListComponent } from './components/hotel-list/hotel-list.component';
+import { HotelDetailComponent } from './components/hotel-detail/hotel-detail.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
 
 export const routes: Routes = [
-  { path: 'hotels', component: HotelListComponent }, // Ahora accesible sin autenticación
-  { path: 'hotel/:id', component: HotelDetailComponent }, // Ahora accesible sin autenticación
+  { path: 'hotels', component: HotelListComponent },
+  { path: 'hotel/:id', component: HotelDetailComponent },
+  { path: 'users/:id', component: UserDetailComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' } // Ruta por defecto
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
 @NgModule({
@@ -18,3 +20,4 @@ export const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import { HotelService } from './hotel.service';
+import { HotelService } from '../../services/hotel.service';
 import {CurrencyPipe, NgIf} from '@angular/common';
 
 @Component({
