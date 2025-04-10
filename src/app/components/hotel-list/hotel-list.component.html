@@ -13,10 +13,10 @@
           <a class="nav-link" href="#autobuses">Autobusos Elèctrics</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#alojamientos">Alojaments Rurals</a>
+          <a class="nav-link" href="#taxis">Taxis Elèctrics</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#actividades">Activitats Agrícoles</a>
+          <a class="nav-link" href="#gastronomia">Gastronomia</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#noticias">Notícies</a>
@@ -45,9 +45,6 @@
             <li>
               <a class="dropdown-item" [routerLink]="['/users', user.id]">Perfil</a>
             </li>
-            <li>
-              <a class="dropdown-item" [routerLink]="['/users', user.id, 'edit']">Editar perfil</a>
-            </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
               <a class="dropdown-item" (click)="logout()">Cerrar sesión</a>
@@ -70,28 +67,76 @@
     </p>
   </div>
 
-  <!-- Llista d'Hotels -->
-  <h2 class="text-center mb-4">Llista d'Hotels</h2>
-
-  <div *ngIf="hotels?.length; else noHotels" class="row">
-    <div class="col-md-4 mb-3" *ngFor="let hotel of hotels">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">{{ hotel?.name }}</h5>
-          <p class="card-text">
-            <strong>Ubicació:</strong> {{ hotel?.location }} <br>
-            <strong>Estrelles:</strong> {{ hotel?.stars }} <br>
-            <strong>Preu per nit:</strong> {{ hotel?.price_per_night | currency }} <br>
-            <strong>Habitacions disponibles:</strong> {{ hotel?.available_rooms }}
-          </p>
-          <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary">Veure detalls</a>
-        </div>
+  <!-- FILTROS -->
+  <div class="container mb-4">
+    <div class="row">
+      <div class="col-md-12 mb-2">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Cerca per nom d'hotel..."
+          [(ngModel)]="filtroNombre"
+          (input)="aplicarFiltros()"
+        />
       </div>
     </div>
   </div>
 
-  <!-- Si no hi ha hotels disponibles -->
-  <ng-template #noHotels>
-    <p class="text-center text-muted">No hi ha hotels disponibles.</p>
-  </ng-template>
+  <!-- LLISTA D'HOTELS -->
+  <div class="container">
+    <h2 class="text-center mb-4">Llista d'Hotels</h2>
+
+    <div *ngIf="filteredHotels?.length; else noHotels" class="row">
+      <div class="col-md-4 mb-3" *ngFor="let hotel of filteredHotels">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ hotel?.name }}</h5>
+
+            <!-- Foto si existe (desde Google Places API) -->
+            <img
+              *ngIf="hotel?.imageUrl"
+              [src]="hotel.imageUrl"
+              alt="{{ hotel.name }}"
+              class="img-fluid rounded mb-2"
+            />
+
+
+            <p class="card-text">
+              <strong>Direcció:</strong> {{ hotel?.address }} <br> <!-- Direcció -->
+              <strong>Lat/Lng:</strong> {{ hotel?.lat }}, {{ hotel?.lng }} <br> <!-- Longitud i Latitud -->
+              <strong>Estrelles:</strong> {{ hotel?.rating }} ⭐<br>
+              <!-- Telèfon -->
+              <span *ngIf="hotel?.phone">
+                <strong>Telèfon:</strong>
+                <a [href]="'tel:' + hotel.phone"> {{ hotel.phone }} 📞</a><br>
+              </span>
+              <!--<strong>Nivell de preu:</strong> {{ hotel?.price_level }} / 4 <br>
+              <strong>Tipus:</strong> {{ hotel?.types?.join(', ') }} <br>
+              <strong>Preu per nit:</strong> {{ hotel?.price_per_night | currency }} <br> &lt;!&ndash; Preu per nit &ndash;&gt;
+
+
+              <strong>Habitacions disponibles:</strong> {{ hotel?.available_rooms }} <br>-->
+              <!-- Google Maps -->
+              <span *ngIf="hotel?.googleMapsUrl">
+                <a [href]="hotel.googleMapsUrl" target="_blank">Veure al mapa</a><br>
+            </span>
+              <!-- Pàgina Web -->
+              <span *ngIf="hotel?.website">
+                <a [href]="hotel.website" target="_blank">Visitar pàgina web</a><br>
+            </span>
+            </p>
+
+            <!-- Link a la vista de detalls interna -->
+            <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary btn-sm">Veure detalls</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Si no hi ha hotels -->
+    <ng-template #noHotels>
+      <p class="text-center text-muted">No hi ha hotels disponibles amb aquests filtres.</p>
+    </ng-template>
+  </div>
 </div>
+
