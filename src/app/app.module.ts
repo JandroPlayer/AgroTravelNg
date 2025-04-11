@@ -7,13 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 @NgModule({
   declarations: [
 
-    // Otros componentes van aquí
   ],
   imports: [
     BrowserModule,
     MatSnackBarModule,  // Agregar el módulo del snackbar
     BrowserAnimationsModule,
     AppComponent,
+
     // Requerido para las animaciones de Material
   ],
   providers: [],

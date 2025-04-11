@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';  // Importamos el UserService
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,12 @@ export class LoginComponent {
   message = '';
   isSuccess: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private userService: UserService  // Inyectamos el UserService
+  ) {}
 
   login() {
     this.authService.login(this.user).subscribe({
@@ -25,10 +31,11 @@ export class LoginComponent {
         this.isSuccess = true;
         this.showSnackbar(this.message, this.isSuccess);
 
-        // Redirigir con el objeto completo del usuario
-        this.router.navigate(['/hotels'], {
-          queryParams: { user: JSON.stringify(res) }  // Pasamos el objeto completo de usuario
-        });
+        // Guardamos el usuario en el servicio UserService
+        this.userService.setUser(res);
+
+        // Redirigimos a la página de hoteles sin pasar el usuario en los queryParams
+        this.router.navigate(['/hotels']);
       },
       error: (err: any) => {
         console.error('Error en login:', err);
@@ -39,7 +46,6 @@ export class LoginComponent {
       }
     });
   }
-
 
   showSnackbar(message: string, isSuccess: boolean) {
     const snackType = isSuccess ? 'success' : 'error';
@@ -54,4 +60,5 @@ export class LoginComponent {
     this.router.navigate(['/register']);
   }
 }
+
 

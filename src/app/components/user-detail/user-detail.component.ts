@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import { UserService } from '../../services/user.service'; // 👈 asegúrate de tenerlo
+import { UserService } from '../../services/user.service';
 import { Location } from '@angular/common';
 import {FormsModule} from '@angular/forms';
 

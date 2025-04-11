@@ -1,0 +1,53 @@
+<div *ngIf="hotel; else loading" class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title text-center">Reserva per a {{ hotel.name }}</h2>
+      <hr>
+
+      <!-- Seleccionar fechas -->
+      <div class="mb-3">
+        <label class="form-label"><strong>Selecciona les dates:</strong></label>
+        <mat-form-field appearance="fill">
+          <mat-label>Selecciona las fechas</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!-- Número de adultos -->
+      <div class="mb-3">
+        <label class="form-label"><strong>Número d'adults:</strong></label>
+        <input [(ngModel)]="numAdults" type="number" min="1" class="form-control" />
+      </div>
+
+      <!-- Número de niños -->
+      <div class="mb-3">
+        <label class="form-label"><strong>Número de nens:</strong></label>
+        <input [(ngModel)]="numChildren" type="number" min="0" class="form-control" />
+      </div>
+
+      <!-- Número de habitaciones -->
+      <div class="mb-3">
+        <label class="form-label"><strong>Número d'habitacions:</strong></label>
+        <input [(ngModel)]="numRooms" type="number" min="1" class="form-control" />
+      </div>
+
+      <div class="text-center mt-3">
+        <button (click)="confirmBooking()" class="btn btn-primary">Confirmar reserva</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregant dades de l'hotel...</span>
+      </div>
+      <p class="mt-2">Carregant dades de l'hotel...</p>
+    </div>
+  </div>
+</ng-template>
+

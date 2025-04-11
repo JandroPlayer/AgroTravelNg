@@ -1,0 +1,18 @@
+/* booking.component.css */
+.card {
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+button {
+  margin-top: 15px;
+  width: 100%;
+}

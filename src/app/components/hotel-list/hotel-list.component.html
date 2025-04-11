@@ -23,7 +23,7 @@
         </li>
 
         <!-- Avatar con Dropdown -->
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" *ngIf="user?.id">
           <a
             class="nav-link dropdown-toggle d-flex align-items-center"
             href="#"
@@ -36,14 +36,14 @@
               class="rounded-circle border border-light"
               width="40"
               height="40"
-              [src]="user.img || 'https://ui-avatars.com/api/?name=' + user.name"
+              [src]="user?.img || 'https://ui-avatars.com/api/?name=' + user?.name"
               alt="Avatar"
               style="object-fit: cover;"
             />
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
             <li>
-              <a class="dropdown-item" [routerLink]="['/users', user.id]">Perfil</a>
+              <a class="dropdown-item" [routerLink]="['/users', user?.id]">Perfil</a>
             </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
@@ -51,8 +51,6 @@
             </li>
           </ul>
         </li>
-
-
       </ul>
     </div>
   </nav>
@@ -83,51 +81,48 @@
   </div>
 
   <!-- LLISTA D'HOTELS -->
-  <div class="container">
+  <div class="container my-4">
     <h2 class="text-center mb-4">Llista d'Hotels</h2>
 
-    <div *ngIf="filteredHotels?.length; else noHotels" class="row">
-      <div class="col-md-4 mb-3" *ngFor="let hotel of filteredHotels">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">{{ hotel?.name }}</h5>
+    <div *ngIf="filteredHotels?.length; else noHotels" class="d-flex flex-column gap-4 overflow-auto" style="max-height: 80vh; padding-right: 10px;">
+      <div class="card shadow-sm" *ngFor="let hotel of filteredHotels">
+        <div class="row g-0">
 
-            <!-- Foto si existe (desde Google Places API) -->
-            <img
-              *ngIf="hotel?.imageUrl"
-              [src]="hotel.imageUrl"
-              alt="{{ hotel.name }}"
-              class="img-fluid rounded mb-2"
-            />
+          <!-- Imatge a l'esquerra -->
+          <div class="col-md-4 text-center p-2" *ngIf="hotel.imageUrl">
+            <img [src]="hotel.imageUrl" [alt]="hotel.name" class="img-fluid rounded-start shadow-sm h-100 object-fit-cover" />
+          </div>
 
+          <!-- Dades a la dreta -->
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title text-center">{{ hotel.name }}</h5>
 
-            <p class="card-text">
-              <strong>Direcció:</strong> {{ hotel?.address }} <br> <!-- Direcció -->
-              <strong>Lat/Lng:</strong> {{ hotel?.lat }}, {{ hotel?.lng }} <br> <!-- Longitud i Latitud -->
-              <strong>Estrelles:</strong> {{ hotel?.rating }} ⭐<br>
-              <!-- Telèfon -->
-              <span *ngIf="hotel?.phone">
+              <p class="card-text">
+                <strong>Direcció:</strong> {{ hotel.address }} <br>
+                <strong>Lat/Lng:</strong> {{ hotel.lat }}, {{ hotel.lng }} <br>
+                <strong>Estrelles:</strong> {{ hotel.rating }} ⭐<br>
+
+                <span *ngIf="hotel.phone">
                 <strong>Telèfon:</strong>
-                <a [href]="'tel:' + hotel.phone"> {{ hotel.phone }} 📞</a><br>
+                <a [href]="'tel:' + hotel.phone">{{ hotel.phone }} 📞</a><br>
               </span>
-              <!--<strong>Nivell de preu:</strong> {{ hotel?.price_level }} / 4 <br>
-              <strong>Tipus:</strong> {{ hotel?.types?.join(', ') }} <br>
-              <strong>Preu per nit:</strong> {{ hotel?.price_per_night | currency }} <br> &lt;!&ndash; Preu per nit &ndash;&gt;
 
+                <span *ngIf="hotel.googleMapsUrl">
+                <a [href]="hotel.googleMapsUrl" target="_blank" class="btn btn-outline-primary btn-sm mt-2 me-2">📍 Mapa</a>
+              </span>
 
-              <strong>Habitacions disponibles:</strong> {{ hotel?.available_rooms }} <br>-->
-              <!-- Google Maps -->
-              <span *ngIf="hotel?.googleMapsUrl">
-                <a [href]="hotel.googleMapsUrl" target="_blank">Veure al mapa</a><br>
-            </span>
-              <!-- Pàgina Web -->
-              <span *ngIf="hotel?.website">
-                <a [href]="hotel.website" target="_blank">Visitar pàgina web</a><br>
-            </span>
-            </p>
+                <span *ngIf="hotel.website">
+                <a [href]="hotel.website" target="_blank" class="btn btn-outline-secondary btn-sm mt-2">🌐 Web</a>
+              </span>
+              </p>
 
-            <!-- Link a la vista de detalls interna -->
-            <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary btn-sm">Veure detalls</a>
+              <!-- Botons -->
+              <div class="d-flex justify-content-between mt-3">
+                <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary btn-sm">👁️ Veure detalls</a>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>

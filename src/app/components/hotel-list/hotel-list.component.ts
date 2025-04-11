@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {HotelService} from '../../services/hotel.service';
-import {UserService} from '../../services/user.service';
-import {NgForOf, NgIf} from '@angular/common';
-import {ActivatedRoute, RouterLink} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { HotelService } from '../../services/hotel.service';
+import { UserService } from '../../services/user.service';  // Importamos el UserService
+import { NgForOf, NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-hotel-list',
@@ -22,31 +22,30 @@ export class HotelListComponent implements OnInit {
   filteredHotels: any[] = [];
 
   filtroNombre: string = '';
-  filtroRating: number = 0;
 
   user: any = {};
   currentUserId: string = '';
 
   constructor(
     private hotelService: HotelService,
-    private userService: UserService,
-    private route: ActivatedRoute
+    private userService: UserService,  // Inyectamos el UserService
   ) {}
 
   ngOnInit(): void {
+    // Obtener el usuario desde el UserService
+    this.user = this.userService.getUser(); // Ahora obtenemos el usuario desde el servicio
+
+    // Verificamos si el usuario existe y asignamos su ID
+    if (this.user) {
+      this.currentUserId = this.user.id;
+    } else {
+      console.error('No se ha encontrado el usuario');
+    }
+
+    // Obtener los hoteles
     this.hotelService.getHotels().subscribe(data => {
       this.hotels = data;
       this.aplicarFiltros();
-    });
-
-    this.route.queryParams.subscribe(params => {
-      const user = params['user'];
-      if (user) {
-        this.user = JSON.parse(user);
-        this.currentUserId = this.user.id;
-      } else {
-        console.error('No se recibió el objeto de usuario');
-      }
     });
   }
 
@@ -57,8 +56,8 @@ export class HotelListComponent implements OnInit {
   }
 
   logout() {
+    this.userService.clearUser();  // Limpiar usuario del servicio
     localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
-    window.location.href = '/login';
+    window.location.href = '/login';  // Redirigir al login
   }
 }

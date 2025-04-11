@@ -1,27 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
-import { HotelService } from '../../services/hotel.service';
+import { ActivatedRoute } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
-import { NgIf } from '@angular/common';
+import { HotelService } from '../../services/hotel.service';
 import { FormsModule } from '@angular/forms';
-import {
-  MatDatepickerModule,
-  MatDatepickerToggle
-} from '@angular/material/datepicker';
-import {
-  MatFormFieldModule
-} from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatNativeDateModule } from '@angular/material/core';
+import {MatDatepickerModule, MatDatepickerToggle} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatNativeDateModule} from '@angular/material/core';
+import {NgIf} from '@angular/common';
 
 @Component({
-  selector: 'app-hotel-detail',
-  templateUrl: './hotel-detail.component.html',
-  standalone: true,
+  selector: 'app-booking',
+  templateUrl: './booking.component.html',
   imports: [
-    NgIf,
     FormsModule,
     MatDatepickerModule,
     MatInputModule,
@@ -30,23 +23,25 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatIconModule,
     MatNativeDateModule,
     MatDatepickerToggle,
-    RouterLink
+    NgIf
   ],
-  styleUrls: ['./hotel-detail.component.css']
+  styleUrls: ['./booking.component.css']
 })
-export class HotelDetailComponent implements OnInit {
+export class BookingComponent implements OnInit {
   hotel: any;
   startDate: Date | null = null;
   endDate: Date | null = null;
   numAdults: number = 2;
   numChildren: number = 0;
   numRooms: number = 1;
+  selectedDate: Date | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private hotelService: HotelService,
     private bookingService: BookingService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const hotelId = this.route.snapshot.paramMap.get('id');
@@ -54,7 +49,6 @@ export class HotelDetailComponent implements OnInit {
       this.hotelService.getHotelById(hotelId).subscribe({
         next: (data) => {
           this.hotel = data;
-          console.log("Hotel cargado: ", this.hotel);  // Asegúrate de que esto tenga datos
         },
         error: (error) => console.error('Error cargando el hotel:', error)
       });
@@ -63,13 +57,13 @@ export class HotelDetailComponent implements OnInit {
 
   confirmBooking(): void {
     if (!this.startDate || !this.endDate || !this.hotel) {
-      alert('Per favor selecciona les dates i completa tots els camps');
+      alert('Por favor selecciona las fechas y completa todos los campos');
       return;
     }
 
     const booking = {
       hotel: {
-        id: this.hotel.id // 🔥 Asegúrate de enviar el ID correctamente
+        id: this.hotel.id // 🔥 Enviar como objeto para que pueda mapearse
       },
       startDate: this.startDate,
       endDate: this.endDate,
@@ -82,12 +76,13 @@ export class HotelDetailComponent implements OnInit {
     this.bookingService.addBooking(booking).subscribe({
       next: (response) => {
         console.log('Reserva confirmada:', response);
-        alert('Reserva confirmada amb èxit!');
+        alert('Reserva confirmada con éxito!');
       },
       error: (err) => {
         console.error('Error al confirmar la reserva:', err);
-        alert('Hi ha hagut un problema al realitzar la reserva');
+        alert('Hubo un problema al realizar la reserva');
       }
     });
   }
 }
+
