@@ -1,0 +1,14 @@
+<h2>Rutes de Taxis Elèctrics</h2>
+<ul>
+  <li *ngFor="let ruta of rutas">
+    {{ ruta.nombre }}: {{ ruta.origen }} → {{ ruta.destino }}
+  </li>
+</ul>
+
+<google-map [center]="center" [zoom]="zoom" height="400px" width="100%">
+  <map-marker *ngFor="let m of markers"
+              [position]="m.position"
+              [label]="m.label"
+              [title]="m.title">
+  </map-marker>
+</google-map>

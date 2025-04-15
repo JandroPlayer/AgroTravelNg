@@ -19,3 +19,17 @@ export class HotelService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }
+
+export interface Hotel {
+  id: number;
+  placeId: string;
+  name: string;
+  address: string;
+  lat: number;
+  lng: number;
+  rating: number;
+  phone: string;
+  website: string;
+  googleMapsUrl: string;
+  imageUrl: string;
+}

@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8">
+      <h2 class="mb-4">🚌 Llista d'autobusos</h2>
+
+      <div *ngIf="autobusos.length > 0; else carregant">
+        <div class="card mb-3" *ngFor="let bus of autobusos">
+          <div class="card-body">
+            <h5 class="card-title">{{ bus.marca }} {{ bus.model }}</h5>
+            <p class="card-text">
+              <strong>Any:</strong> {{ bus.anyFabricacio }}<br>
+              <strong>Autonomia:</strong> {{ bus.autonomiaKm }} km<br>
+              <strong>Capacitat:</strong> {{ bus.capacitatPassatgers }} passatgers<br>
+              <strong>Parades assignades:</strong> {{ bus.numParadesAssignades }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #carregant>
+        <div class="alert alert-info">Carregant autobusos...</div>
+      </ng-template>
+    </div>
+
+    <!-- Mapa petit -->
+    <div class="col-md-4">
+      <h4 class="mb-3">🗺️ Ubicació general</h4>
+      <div class="border rounded shadow-sm" style="height: 250px; width: 100%;">
+        <google-map
+          [height]="'100%'"
+          [width]="'100%'"
+          [center]="center"
+          [zoom]="zoom">
+        </google-map>
+      </div>
+      <button class="btn btn-primary mt-3 w-100" (click)="goToBusMap()">
+        Veure mapa de rutes
+      </button>
+    </div>
+  </div>
+</div>

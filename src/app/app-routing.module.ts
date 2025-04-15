@@ -6,6 +6,9 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import {BookingComponent} from './components/booking/booking.component';
+import {AutobusesComponent} from './components/autobuses/autobuses.component';
+import {TaxisComponent} from './components/taxis/taxis.component';
+import {BusMapComponent} from './components/busmap/bus-map.component';
 
 export const routes: Routes = [
   { path: 'hotels', component: HotelListComponent },
@@ -15,6 +18,9 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'reserva', component: BookingComponent },
   { path: 'reserva/:id', component: BookingComponent },
+  { path: 'autobuses', component: AutobusesComponent },
+  { path: 'taxis', component: TaxisComponent },
+  { path: 'busmap', component: BusMapComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

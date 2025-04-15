@@ -1,0 +1,22 @@
+<!-- bus-map.component.html -->
+
+<div class="map-container">
+  <google-map
+    height="500px"
+    width="100%"
+    [center]="center"
+    [zoom]="zoom">
+
+    <map-marker
+      *ngFor="let marker of markers"
+      [position]="marker.position"
+      [label]="marker.label"
+      [title]="marker.title"
+      [icon]="marker.icon">
+    </map-marker>
+
+  </google-map>
+
+
+</div>
+
