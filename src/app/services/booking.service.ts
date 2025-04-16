@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Booking {
-  hotelId: string;
+  id: string;  // Agregar el campo 'id'
+  hotel: { id: number };
   startDate: Date;
   endDate: Date;
   adults: number;
@@ -36,6 +37,10 @@ export class BookingService {
 
   getBookingsByHotel(hotelId: string): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.apiUrl}/hotel/${hotelId}`);
+  }
+
+  getBookingsByUser(userId: string): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${this.apiUrl}/usuario/${userId}`);
   }
 }
 

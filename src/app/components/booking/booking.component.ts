@@ -10,6 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatNativeDateModule} from '@angular/material/core';
 import {NgIf} from '@angular/common';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-booking',
@@ -39,9 +40,11 @@ export class BookingComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private hotelService: HotelService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private userService: UserService  // 👈 Inyectamos UserService
   ) {
   }
+
 
   ngOnInit(): void {
     const hotelId = this.route.snapshot.paramMap.get('id');
@@ -61,9 +64,19 @@ export class BookingComponent implements OnInit {
       return;
     }
 
+    const user = this.userService.getUser();  // 👈 Obtenemos el usuario logueado
+
+    if (!user || !user.id) {
+      alert('Debes iniciar sesión para hacer una reserva');
+      return;
+    }
+
     const booking = {
       hotel: {
-        id: this.hotel.id // 🔥 Enviar como objeto para que pueda mapearse
+        id: this.hotel.id
+      },
+      user: {
+        id: user.id  // 🔥 Asociamos el user a la reserva
       },
       startDate: this.startDate,
       endDate: this.endDate,
@@ -71,7 +84,6 @@ export class BookingComponent implements OnInit {
       children: this.numChildren,
       rooms: this.numRooms
     };
-
 
     this.bookingService.addBooking(booking).subscribe({
       next: (response) => {

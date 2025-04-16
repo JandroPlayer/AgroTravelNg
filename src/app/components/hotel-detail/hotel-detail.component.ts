@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HotelService } from '../../services/hotel.service';
 import { BookingService } from '../../services/booking.service';
+import { UserService } from '../../services/user.service'; // ✅ Importat
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -45,7 +46,8 @@ export class HotelDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private hotelService: HotelService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private userService: UserService // ✅ Injectat
   ) {}
 
   ngOnInit(): void {
@@ -54,9 +56,9 @@ export class HotelDetailComponent implements OnInit {
       this.hotelService.getHotelById(hotelId).subscribe({
         next: (data) => {
           this.hotel = data;
-          console.log("Hotel cargado: ", this.hotel);  // Asegúrate de que esto tenga datos
+          console.log("Hotel carregat: ", this.hotel);
         },
-        error: (error) => console.error('Error cargando el hotel:', error)
+        error: (error) => console.error('Error carregant l’hotel:', error)
       });
     }
   }
@@ -67,9 +69,18 @@ export class HotelDetailComponent implements OnInit {
       return;
     }
 
+    const user = this.userService.getUser(); // ✅ Obtenim l'usuari del localStorage
+    if (!user) {
+      alert('Has d’estar autenticat per fer una reserva.');
+      return;
+    }
+
     const booking = {
       hotel: {
-        id: this.hotel.id // 🔥 Asegúrate de enviar el ID correctamente
+        id: this.hotel.id
+      },
+      user: {
+        id: user.id // ✅ Assignem l'id de l’usuari
       },
       startDate: this.startDate,
       endDate: this.endDate,
@@ -77,7 +88,6 @@ export class HotelDetailComponent implements OnInit {
       children: this.numChildren,
       rooms: this.numRooms
     };
-
 
     this.bookingService.addBooking(booking).subscribe({
       next: (response) => {
