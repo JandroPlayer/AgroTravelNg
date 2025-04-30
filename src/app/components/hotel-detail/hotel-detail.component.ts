@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HotelService } from '../../services/hotel.service';
 import { BookingService } from '../../services/booking.service';
-import { UserService } from '../../services/user.service'; // ✅ Importat
+import { UserService } from '../../services/user.service';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
+import {NavbarComponent} from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -31,7 +32,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatIconModule,
     MatNativeDateModule,
     MatDatepickerToggle,
-    RouterLink
+    RouterLink,
+    NavbarComponent
   ],
   styleUrls: ['./hotel-detail.component.css']
 })
@@ -47,7 +49,7 @@ export class HotelDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private hotelService: HotelService,
     private bookingService: BookingService,
-    private userService: UserService // ✅ Injectat
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {

@@ -10,6 +10,7 @@ import {AutobusesComponent} from './components/autobuses/autobuses.component';
 import {TaxisComponent} from './components/taxis/taxis.component';
 import {BusMapComponent} from './components/busmap/bus-map.component';
 import {BookingListComponent} from './components/booking-list/booking-list.component';
+import {ReservaAutobusComponent} from './components/reservautobus/reservautobus.component';
 
 export const routes: Routes = [
   { path: 'hotels', component: HotelListComponent },
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'reserva', component: BookingComponent },
   { path: 'reserva/:id', component: BookingComponent },
+  { path: 'reservautobus/:id', component: ReservaAutobusComponent },
   { path: 'autobuses', component: AutobusesComponent },
   { path: 'taxis', component: TaxisComponent },
   { path: 'busmap', component: BusMapComponent },

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AutobusosService, Autobus } from '../../services/autobusos.service';
 import { GoogleMap } from '@angular/google-maps';
 import {NgForOf, NgIf} from '@angular/common';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {NavbarComponent} from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-autobuses',
@@ -11,7 +12,9 @@ import { Router } from '@angular/router';
   imports: [
     GoogleMap,
     NgForOf,
-    NgIf
+    NgIf,
+    NavbarComponent,
+    RouterLink
   ]
 })
 export class AutobusesComponent implements OnInit {

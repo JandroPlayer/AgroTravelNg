@@ -1,0 +1,9 @@
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: #fff !important;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.6); /* millora llegibilitat */
+}
+
+.navbar-brand {
+  margin-left: 16px;
+}

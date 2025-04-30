@@ -10,3 +10,29 @@
   background-color: #dc3545;  /* Rojo */
   color: white;
 }
+
+.warning {
+  background-color: #ff9800;
+  color: #fff;
+}
+
+.mat-datepicker-content {
+  background-color: #ffffff !important;
+  border: 2px solid #000;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  z-index: 1000;
+}
+
+
+.mat-calendar-body-selected {
+  background-color: #007bff !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border: 1px solid #007bff;
+  border-radius: 50%;
+}

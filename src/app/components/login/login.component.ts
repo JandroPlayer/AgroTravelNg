@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
@@ -17,14 +16,13 @@ export class LoginComponent {
   isSuccess: boolean = false;
 
   constructor(
-    private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
     private userService: UserService  // Inyectamos el UserService
   ) {}
 
   login() {
-    this.authService.login(this.user).subscribe({
+    this.userService.login(this.user).subscribe({
       next: (res: any) => {
         console.log('Login exitoso:', res);
         this.message = 'Inicio de sesión exitoso';

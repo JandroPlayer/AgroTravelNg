@@ -1,3 +1,5 @@
+<app-navbar></app-navbar>
+
 <div class="container mt-4">
   <div class="row">
     <div class="col-md-8">
@@ -13,6 +15,10 @@
               <strong>Capacitat:</strong> {{ bus.capacitatPassatgers }} passatgers<br>
               <strong>Parades assignades:</strong> {{ bus.numParadesAssignades }}
             </p>
+            <!-- Botons -->
+            <div class="d-flex justify-content-between mt-3">
+              <a [routerLink]="['/reservautobus', bus.id]" class="btn btn-primary btn-sm">👁️ Veure detalls</a>
+            </div>
           </div>
         </div>
       </div>

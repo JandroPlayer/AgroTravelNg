@@ -2,39 +2,55 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+// Interfície per a la resposta de login
+export interface UserResponse {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: string;
+  img: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private apiUrl = 'http://localhost:8080/users';
-  private currentUser: any;  // Variable privada para almacenar el usuario
+  private currentUser: any;
 
   constructor(private http: HttpClient) {}
 
-  // Método para obtener el usuario del localStorage o desde la API si no está disponible
+  // Autenticació
+  register(user: { name: string; email: string; password: string }): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/register`, user);
+  }
+
+  login(user: { email: string; password: string }): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.apiUrl}/login`, user);
+  }
+
+  // Gestió local de l'usuari
   getUser(): any {
     const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      return JSON.parse(currentUser);  // Si el usuario está en localStorage, lo devolvemos
-    }
-    return null;  // Si no está, devolvemos null
+    return currentUser ? JSON.parse(currentUser) : null;
   }
 
   setUser(user: any): void {
-    localStorage.setItem('currentUser', JSON.stringify(user));  // Guardamos el usuario en localStorage
+    localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
   clearUser(): void {
-    localStorage.removeItem('currentUser');  // Limpiamos el usuario de localStorage
+    localStorage.removeItem('currentUser');
   }
 
-  // Obtener usuario por ID desde la API
+  // Consultes i modificacions remotes
   getUserById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  // Actualizar los datos del usuario en la API
   updateUser(id: string, userData: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, userData);
   }
 }
+

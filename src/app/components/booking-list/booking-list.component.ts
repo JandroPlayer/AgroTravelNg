@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../../services/booking.service';
-import { HotelService } from '../../services/hotel.service';  // Inyectamos el HotelService
+import { HotelService } from '../../services/hotel.service';
 import { UserService } from '../../services/user.service';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {CurrencyPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { HttpClient } from '@angular/common/http';
+import {ReservaAutobusService} from '../../services/reservautobus.service';
 
 @Component({
   selector: 'app-booking-list',
@@ -10,46 +13,50 @@ import {DatePipe, NgForOf, NgIf} from '@angular/common';
   imports: [
     NgIf,
     DatePipe,
-    NgForOf
+    NgForOf,
+    NavbarComponent,
+    CurrencyPipe
   ],
   styleUrls: ['./booking-list.component.css']
 })
 export class BookingListComponent implements OnInit {
   bookings: any[] = [];
+  busBookings: any[] = [];
   user: any = {};
   currentUserId: string = '';
 
   constructor(
+    private reservaAutobusService: ReservaAutobusService,
     private bookingService: BookingService,
-    private hotelService: HotelService,  // Inyectamos el HotelService
-    private userService: UserService
+    private hotelService: HotelService,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
-    // Obtener el usuario desde el UserService
     this.user = this.userService.getUser();
     if (this.user) {
       this.currentUserId = this.user.id;
-    }
 
-    // Obtener las reservas del usuario
-    this.bookingService.getBookingsByUser(this.currentUserId).subscribe(data => {
-      this.bookings = data;
-      this.loadHotelNames();  // Llamamos al metodo para cargar los nombres de los hoteles
-    });
+      // Cargar reservas de hotel
+      this.bookingService.getBookingsByUser(this.currentUserId).subscribe(data => {
+        this.bookings = data;
+        this.loadHotelNames();
+      });
+
+      // Cargar reservas de autobús
+      this.reservaAutobusService.getReservasAutobusByUser(this.currentUserId).subscribe(data => {
+        this.busBookings = data;
+      });
+    }
   }
 
   loadHotelNames(): void {
     this.bookings.forEach((booking) => {
-      // Acceder al hotel.id dentro de cada reserva
-      const hotelId = booking.hotel.id;  // Aquí usamos hotel.id
-
+      const hotelId = booking.hotel?.id;
       if (hotelId) {
         this.hotelService.getHotelById(hotelId).subscribe(hotelData => {
-          booking.hotelName = hotelData.name;  // Asignamos el nombre del hotel a la reserva
+          booking.hotelName = hotelData.name;
         });
-      } else {
-        console.log('El id del hotel es undefined o null');
       }
     });
   }

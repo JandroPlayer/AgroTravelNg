@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
+import {UserService} from '../../services/user.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {HttpClient} from '@angular/common/http';
@@ -28,7 +28,7 @@ export class RegisterComponent {
   uploadPreset = 'paucasesnoves';
 
   constructor(
-    private authService: AuthService,
+    private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
     private http: HttpClient
@@ -68,7 +68,8 @@ export class RegisterComponent {
         this.user.img = `https://ui-avatars.com/api/?name=${initials}&background=random&color=fff&size=128`;
       }
 
-      this.authService.register(this.user).subscribe({
+      // Metodo para registrar usuario
+      this.userService.register(this.user).subscribe({
         next: () => {
           this.message = 'Usuario registrado con éxito!';
           this.isSuccess = true;

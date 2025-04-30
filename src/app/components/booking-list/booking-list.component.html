@@ -1,5 +1,7 @@
+<app-navbar></app-navbar>
+
 <div class="container mt-4">
-  <h2 class="mb-3 text-center">Les meves reserves</h2>
+  <h2 class="mb-3 text-center">Les meves reserves d'Hotels</h2>
 
   <div *ngIf="bookings.length === 0" class="alert alert-warning text-center">
     <p>No tens cap reserva registrada.</p>
@@ -30,3 +32,34 @@
     </tbody>
   </table>
 </div>
+
+<!-- Taula de reserves de busos -->
+<div class="container mt-4">
+  <h2 class="mb-3 text-center">Les meves reserves de Autobusos</h2>
+
+  <div *ngIf="busBookings.length === 0" class="alert alert-warning text-center">
+    <p>No tens cap reserva de bus registrada.</p>
+  </div>
+
+  <table *ngIf="busBookings.length > 0" class="table table-striped table-bordered">
+    <thead class="table-warning">
+    <tr>
+      <th>ID</th>
+      <th>Bus</th>
+      <th>Data i hora</th>
+      <th>Núm. passatgers</th>
+      <th>Preu</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let booking of busBookings">
+      <td>{{ booking.id }}</td>
+      <td>{{ booking.autobus.marca }} {{ booking.autobus.model }}</td>
+      <td>{{ booking.dataHora | date:'short' }}</td>
+      <td>{{ booking.num_passatgers }}</td>
+      <td>{{ booking.preu | currency:'EUR' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

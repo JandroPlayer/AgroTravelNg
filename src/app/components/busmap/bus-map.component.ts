@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { HotelService, Hotel } from '../../services/hotel.service';
 import { GoogleMap, MapMarker } from '@angular/google-maps';
 import { NgForOf } from '@angular/common';
+import {NavbarComponent} from '../navbar/navbar.component';
 
 declare const google: any;
 
@@ -12,7 +13,8 @@ declare const google: any;
   imports: [
     GoogleMap,
     MapMarker,
-    NgForOf
+    NgForOf,
+    NavbarComponent
   ]
 })
 export class BusMapComponent implements OnInit, AfterViewInit {

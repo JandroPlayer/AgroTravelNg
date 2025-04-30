@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+
+<div *ngIf="autobus; else loading" class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title text-center">Reserva per a {{ autobus.model }}</h2>
+      <form [formGroup]="reservaForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Data d'inici</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="hora-select ms-2">
+          <mat-label>Hora</mat-label>
+          <mat-select formControlName="startTime">
+            <mat-option *ngFor="let time of availableTimes" [value]="time">{{ time }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="mb-3">
+          <label class="form-label"><strong>Nombre d'adults:</strong></label>
+          <input matInput type="number" formControlName="numPassatgers" min="1" class="form-control" />
+        </div>
+
+        <div class="text-center mt-3">
+          <button class="btn btn-primary" (click)="confirmarReserva()">Confirmar reserva</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregant dades del autobús...</span>
+      </div>
+      <p class="mt-2">Carregant dades del autobús...</p>
+    </div>
+  </div>
+</ng-template>
