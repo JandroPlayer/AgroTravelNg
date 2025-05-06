@@ -1,23 +1,36 @@
 <app-navbar></app-navbar>
 
 <div class="container mt-4">
-  <div class="row">
+  <div class="row justify-content-center">
     <div class="col-md-8">
-      <h2 class="mb-4">🚌 Llista d'autobusos</h2>
+      <h2 class="mb-4">🚌🔌 Llista d'autobusos elèctrics</h2>
 
       <div *ngIf="autobusos.length > 0; else carregant">
-        <div class="card mb-3" *ngFor="let bus of autobusos">
-          <div class="card-body">
-            <h5 class="card-title">{{ bus.marca }} {{ bus.model }}</h5>
-            <p class="card-text">
-              <strong>Any:</strong> {{ bus.anyFabricacio }}<br>
-              <strong>Autonomia:</strong> {{ bus.autonomiaKm }} km<br>
-              <strong>Capacitat:</strong> {{ bus.capacitatPassatgers }} passatgers<br>
-              <strong>Parades assignades:</strong> {{ bus.numParadesAssignades }}
-            </p>
-            <!-- Botons -->
-            <div class="d-flex justify-content-between mt-3">
-              <a [routerLink]="['/reservautobus', bus.id]" class="btn btn-primary btn-sm">👁️ Veure detalls</a>
+        <div class="card mb-4 rounded-4 shadow-sm" *ngFor="let bus of autobusos">
+          <div class="row g-0 align-items-center">
+            <!-- Columna imatge -->
+            <div class="col-md-4 d-flex justify-content-center align-items-center p-3">
+              <img [src]="bus.imageUrl || 'assets/default_image.jpg'"
+                   alt="Imagen del autobús"
+                   class="img-fluid rounded-4 shadow-sm"
+                   style="max-height: 150px; object-fit: contain;">
+            </div>
+
+            <!-- Columna contingut -->
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{ bus.marca }} {{ bus.model }}</h5>
+                <p class="card-text">
+                  <strong>Any:</strong> {{ bus.anyFabricacio }}<br>
+                  <strong>Autonomia:</strong> {{ bus.autonomiaKm }} km<br>
+                  <strong>Capacitat:</strong> {{ bus.capacitatPassatgers }} passatgers<br>
+                  <strong>Parades assignades:</strong> {{ bus.numParadesAssignades }}<br>
+                  <strong>Preu per persona:</strong> {{ bus.preuPerPersona | currency:'EUR':'symbol':'1.2-2' }}
+                </p>
+                <div class="d-flex justify-content-between mt-3">
+                  <a [routerLink]="['/reservautobus', bus.id]" class="btn btn-primary btn-sm">Reservar</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

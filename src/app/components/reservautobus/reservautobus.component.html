@@ -24,6 +24,10 @@
           <input matInput type="number" formControlName="numPassatgers" min="1" class="form-control" />
         </div>
 
+        <div class="mt-2">
+          <strong>Preu total:</strong> {{ preuTotal | currency:'EUR':'symbol':'1.2-2' }}
+        </div>
+
         <div class="text-center mt-3">
           <button class="btn btn-primary" (click)="confirmarReserva()">Confirmar reserva</button>
         </div>

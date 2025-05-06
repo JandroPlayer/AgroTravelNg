@@ -21,15 +21,17 @@ export class ReservaAutobusService {
   // Crear una nueva reserva de autobús
   createReserva(reserva: {
     autobusId: number;
-    numPassatgers: number;
+    numPassatgers: any;
     fechaReserva: string;
-    userId: number;
+    userId: any;
+    preu: number
   }): Observable<ReservaAutobus> {
     const body = {
       autobus: { id: reserva.autobusId },
       user: { id: reserva.userId },
       dataHora: reserva.fechaReserva,
-      num_passatgers: reserva.numPassatgers
+      num_passatgers: reserva.numPassatgers,
+      preu: reserva.preu
     };
 
     return this.http.post<ReservaAutobus>(this.apiUrl, body);
@@ -50,4 +52,14 @@ export class ReservaAutobusService {
   getReservasAutobusByUser(userId: string): Observable<ReservaAutobus[]> {
     return this.http.get<ReservaAutobus[]>(`${this.apiUrl}/user/${userId}`);
   }
+
+  // reserva.service.ts
+  pagarReserva(reservaId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${reservaId}/pagar`, {});
+  }
+
+  deleteReserva(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
 }

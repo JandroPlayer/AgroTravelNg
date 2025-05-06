@@ -10,6 +10,8 @@ export interface Autobus {
   autonomiaKm: number;
   capacitatPassatgers: number;
   numParadesAssignades: number;
+  preuPerPersona: number;
+  imageUrl: string;
 }
 
 @Injectable({

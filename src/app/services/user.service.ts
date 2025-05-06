@@ -10,6 +10,7 @@ export interface UserResponse {
   password: string;
   createdAt: string;
   img: string;
+  saldo: string;
 }
 
 @Injectable({
@@ -52,5 +53,9 @@ export class UserService {
   updateUser(id: string, userData: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, userData);
   }
-}
 
+  payForUser(userId: number, amount: number): Observable<any> {
+    const paymentRequest = { amount };
+    return this.http.put<any>(`${this.apiUrl}/${userId}/pay`, paymentRequest);
+  }
+}

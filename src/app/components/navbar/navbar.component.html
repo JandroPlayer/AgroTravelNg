@@ -1,6 +1,10 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #28a745;">
-    <a class="navbar-brand" href="#">AgroTravel Mallorca</a>
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="https://res.cloudinary.com/dglxd4bqz/image/upload/v1746523107/logo3_fsaokn.png"
+           alt="Logo AgroTravel" height="60" class="me-2" />
+      <span class="fs-4">AgroTravel Mallorca</span>
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -26,9 +30,9 @@
 
         <li class="nav-item dropdown" *ngIf="user?.id">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
+             data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menú de usuario">
             <img class="rounded-circle border border-light" width="40" height="40"
-                 [src]="user?.img || 'https://ui-avatars.com/api/?name=' + user?.name" alt="Avatar"
+                 [src]="user?.img || 'https://ui-avatars.com/api/?name=' + user?.name" alt="{{ user?.name || 'Avatar' }}"
                  style="object-fit: cover;" />
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -40,7 +44,7 @@
             </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <a class="dropdown-item" (click)="logout()">Cerrar sessió</a>
+              <a class="dropdown-item" (click)="logout()">Cerrar sesión</a>
             </li>
           </ul>
         </li>

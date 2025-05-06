@@ -49,6 +49,8 @@
       <th>Data i hora</th>
       <th>Núm. passatgers</th>
       <th>Preu</th>
+      <th>Pagament</th>
+      <th>Accions</th> <!-- Nou -->
     </tr>
     </thead>
     <tbody>
@@ -58,6 +60,22 @@
       <td>{{ booking.dataHora | date:'short' }}</td>
       <td>{{ booking.num_passatgers }}</td>
       <td>{{ booking.preu | currency:'EUR' }}</td>
+      <td>
+        <ng-container *ngIf="!booking.pagada; else pagat">
+          <button class="btn btn-success btn-sm"
+                  [disabled]="booking.pagant"
+                  (click)="pagarReserva(booking)">
+            {{ booking.pagant ? 'Pagant...' : 'Pagar' }}
+          </button>
+        </ng-container>
+        <ng-template #pagat>✅</ng-template>
+      </td>
+      <td>
+        <button class="btn btn-danger btn-sm"
+                (click)="cancelarReserva(booking.id)">
+          Cancel·lar
+        </button>
+      </td>
     </tr>
     </tbody>
   </table>

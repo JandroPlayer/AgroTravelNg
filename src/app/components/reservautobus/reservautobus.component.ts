@@ -4,7 +4,7 @@ import { AutobusosService, Autobus } from '../../services/autobusos.service';
 import { ReservaAutobusService } from '../../services/reservautobus.service';
 import { UserService } from '../../services/user.service';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { NgIf, NgForOf } from '@angular/common';
+import {NgIf, NgForOf, CurrencyPipe} from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
@@ -31,7 +31,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     MatOption,
     MatSelect,
     NavbarComponent,
-    MatSuffix
+    MatSuffix,
+    CurrencyPipe
   ]
 })
 export class ReservaAutobusComponent implements OnInit {
@@ -57,7 +58,7 @@ export class ReservaAutobusComponent implements OnInit {
     this.reservaForm = new FormGroup({
       startDate: new FormControl(null, Validators.required),
       startTime: new FormControl('', Validators.required),
-      numPassatgers: new FormControl(1, [Validators.required, Validators.min(1)])
+      numPassatgers: new FormControl(1, [Validators.required, Validators.min(1)]),
     });
   }
 
@@ -80,11 +81,15 @@ export class ReservaAutobusComponent implements OnInit {
 
       const fechaReserva = `${startDate.toISOString().split('T')[0]}T${startTime}:00`;
 
+      // Calcula el preuTotal aquí
+      const preuTotal = this.autobus.preuPerPersona * numPassatgers;
+
       const reservaData = {
         autobusId: this.autobus.id,
         numPassatgers: numPassatgers,
         fechaReserva: fechaReserva,
-        userId: userId
+        userId: userId,
+        preu: preuTotal
       };
 
       this.reservaAutobusService.createReserva(reservaData).subscribe(
@@ -111,4 +116,10 @@ export class ReservaAutobusComponent implements OnInit {
       });
     }
   }
+
+  get preuTotal(): number {
+    const num = this.reservaForm.get('numPassatgers')?.value || 0;
+    return this.autobus ? this.autobus.preuPerPersona * num : 0;
+  }
+
 }
