@@ -5,18 +5,14 @@ import { BookingService } from '../../services/booking.service';
 import { UserService } from '../../services/user.service';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {
-  MatDatepickerModule,
-  MatDatepickerToggle
-} from '@angular/material/datepicker';
-import {
-  MatFormFieldModule
-} from '@angular/material/form-field';
+import { MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
-import {NavbarComponent} from '../navbar/navbar.component';
+import { NavbarComponent } from '../navbar/navbar.component';
+import {Logica} from '../../logica/logica';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -49,31 +45,32 @@ export class HotelDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private hotelService: HotelService,
     private bookingService: BookingService,
-    private userService: UserService
+    private userService: UserService,
+    private logica: Logica
   ) {}
 
   ngOnInit(): void {
     const hotelId = this.route.snapshot.paramMap.get('id');
     if (hotelId) {
-      this.hotelService.getHotelById(hotelId).subscribe({
+      this.hotelService.getHotelByIdWithOutActivitats(hotelId).subscribe({
         next: (data) => {
           this.hotel = data;
-          console.log("Hotel carregat: ", this.hotel);
+          console.log('Hotel carregat: ', this.hotel);
         },
-        error: (error) => console.error('Error carregant l’hotel:', error)
+        error: (error) => this.logica.showSnackBar('Error carregant l’hotel: ' + error, 'error')
       });
     }
   }
 
   confirmBooking(): void {
     if (!this.startDate || !this.endDate || !this.hotel) {
-      alert('Per favor selecciona les dates i completa tots els camps');
+      this.logica.showSnackBar('Per favor selecciona les dates i completa tots els camps', 'error');
       return;
     }
 
-    const user = this.userService.getUser(); // ✅ Obtenim l'usuari del localStorage
+    const user = this.userService.getUser();
     if (!user) {
-      alert('Has d’estar autenticat per fer una reserva.');
+      this.logica.showSnackBar('Has d’estar autenticat per fer una reserva.', 'error');
       return;
     }
 
@@ -82,7 +79,7 @@ export class HotelDetailComponent implements OnInit {
         id: this.hotel.id
       },
       user: {
-        id: user.id // ✅ Assignem l'id de l’usuari
+        id: user.id
       },
       startDate: this.startDate,
       endDate: this.endDate,
@@ -94,11 +91,11 @@ export class HotelDetailComponent implements OnInit {
     this.bookingService.addBooking(booking).subscribe({
       next: (response) => {
         console.log('Reserva confirmada:', response);
-        alert('Reserva confirmada amb èxit!');
+        this.logica.showSnackBar('Reserva confirmada amb èxit!', 'success');
       },
       error: (err) => {
         console.error('Error al confirmar la reserva:', err);
-        alert('Hi ha hagut un problema al realitzar la reserva');
+        this.logica.showSnackBar('Hi ha hagut un problema al realitzar la reserva', 'error');
       }
     });
   }

@@ -16,6 +16,12 @@
   color: #fff;
 }
 
+/* info = blau */
+.info {
+  background-color: #2196f3;
+  color: white;
+}
+
 .mat-datepicker-content {
   background-color: #ffffff !important;
   border: 2px solid #000;

@@ -18,6 +18,14 @@ export class HotelService {
   getHotelById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
+
+  getHotelsWithoutActivitats(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/without-activities`);
+  }
+
+  getHotelByIdWithOutActivitats(hotelId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${hotelId}/without-activities`);  // Asegúrate de que este endpoint no incluya actividades
+  }
 }
 
 export interface Hotel {

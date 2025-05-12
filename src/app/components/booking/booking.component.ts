@@ -41,7 +41,7 @@ export class BookingComponent implements OnInit {
     private route: ActivatedRoute,
     private hotelService: HotelService,
     private bookingService: BookingService,
-    private userService: UserService  // 👈 Inyectamos UserService
+    private userService: UserService
   ) {
   }
 
@@ -64,7 +64,7 @@ export class BookingComponent implements OnInit {
       return;
     }
 
-    const user = this.userService.getUser();  // 👈 Obtenemos el usuario logueado
+    const user = this.userService.getUser();
 
     if (!user || !user.id) {
       alert('Debes iniciar sesión para hacer una reserva');
@@ -76,7 +76,7 @@ export class BookingComponent implements OnInit {
         id: this.hotel.id
       },
       user: {
-        id: user.id  // 🔥 Asociamos el user a la reserva
+        id: user.id
       },
       startDate: this.startDate,
       endDate: this.endDate,

@@ -32,9 +32,25 @@
       <div class="card shadow-sm" *ngFor="let hotel of filteredHotels">
         <div class="row g-0">
 
-          <!-- Imatge a l'esquerra -->
+          <!-- Imatge amb placeholder, mida fixa i carregament vagarós -->
           <div class="col-md-4 text-center p-2" *ngIf="hotel.imageUrl">
-            <img [src]="hotel.imageUrl" [alt]="hotel.name" class="img-fluid rounded-start shadow-sm h-100 object-fit-cover" />
+            <div style="width: 100%; height: 250px; position: relative;">
+              <img
+                [src]="hotel.imageUrl"
+                [alt]="hotel.name"
+                class="img-fluid rounded-start shadow-sm object-fit-cover"
+                [style.objectFit]="'cover'"
+                style="width: 100%; height: 100%;"
+                (load)="hotel.loaded = true"
+                [hidden]="!hotel.loaded"
+              />
+
+              <!-- Spinner mentre es carrega -->
+              <div *ngIf="!hotel.loaded" class="d-flex align-items-center justify-content-center"
+                   style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f0f0f0;">
+                <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
+              </div>
+            </div>
           </div>
 
           <!-- Dades a la dreta -->

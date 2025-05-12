@@ -29,9 +29,12 @@ export class HotelListComponent implements OnInit {
 
   ngOnInit(): void {
     // Obtener los hoteles
-    this.hotelService.getHotels().subscribe(data => {
+    this.hotelService.getHotelsWithoutActivitats().subscribe(data => {
+      console.log(`Hoteles recibidos (${data.length}):`, data);
       this.hotels = data;
       this.aplicarFiltros();
+    }, error => {
+      console.error('Error al obtener hoteles:', error);
     });
   }
 

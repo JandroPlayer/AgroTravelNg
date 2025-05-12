@@ -42,5 +42,8 @@ export class BookingService {
   getBookingsByUser(userId: string): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.apiUrl}/usuario/${userId}`);
   }
-}
 
+  loadActivitatsPerReserva(idReserva: number): Observable<string> {
+    return this.http.get(`${this.apiUrl}/${idReserva}/activitats/load`, { responseType: 'text' });
+  }
+}
