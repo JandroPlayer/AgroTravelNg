@@ -12,6 +12,7 @@ import {BusMapComponent} from './components/busmap/bus-map.component';
 import {BookingListComponent} from './components/booking-list/booking-list.component';
 import {ReservaAutobusComponent} from './components/reservautobus/reservautobus.component';
 import {ActivitatsComponent} from './components/activitats/activitats.component';
+import {FavoritosComponent} from './components/favoritos/favoritos.component';
 
 export const routes: Routes = [
   { path: 'hotels', component: HotelListComponent },
@@ -26,6 +27,8 @@ export const routes: Routes = [
   { path: 'taxis', component: TaxisComponent },
   { path: 'busmap', component: BusMapComponent },
   { path: 'activitats', component: ActivitatsComponent },
+  // Rutas Dropdown
+  { path: 'users/:id/favoritos', component: FavoritosComponent },
   {
     path: 'users/:id/bookings',
     component: BookingListComponent

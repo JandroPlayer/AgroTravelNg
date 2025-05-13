@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { UserService } from '../../services/user.service'; // ajusta el path si cal
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +12,8 @@ import { UserService } from '../../services/user.service'; // ajusta el path si 
 })
 export class NavbarComponent implements OnInit {
   user: any;
+  toggleMenu: boolean = false;
+  toggleDropdown: boolean = false;
 
   constructor(private userService: UserService) {}
 
@@ -24,5 +26,12 @@ export class NavbarComponent implements OnInit {
     localStorage.removeItem('token');
     window.location.href = '/login';
   }
-}
 
+  toggleMobileMenu() {
+    this.toggleMenu = !this.toggleMenu;
+  }
+
+  toggleUserDropdown() {
+    this.toggleDropdown = !this.toggleDropdown;
+  }
+}

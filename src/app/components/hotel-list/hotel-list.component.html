@@ -77,9 +77,15 @@
               </span>
               </p>
 
-              <!-- Botons -->
+              <!-- Botones -->
               <div class="d-flex justify-content-between mt-3">
                 <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary btn-sm">👁️ Veure detalls</a>
+
+                <!-- Botón para añadir a favoritos si no está en favoritos -->
+                <button (click)="addFavorite(hotel.id)" class="btn btn-outline-danger btn-sm">
+                  ❤️ Afegir a Favorits
+                </button>
+
               </div>
 
             </div>

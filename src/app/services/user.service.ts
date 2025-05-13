@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {Hotel} from './hotel.service';
 
 // Interfície per a la resposta de login
 export interface UserResponse {
@@ -17,7 +18,7 @@ export interface UserResponse {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/users';
+  private apiUrl = 'http://localhost:8080/api/users';
   private currentUser: any;
 
   constructor(private http: HttpClient) {}
@@ -57,5 +58,18 @@ export class UserService {
   payForUser(userId: number, amount: number): Observable<any> {
     const paymentRequest = { amount };
     return this.http.put<any>(`${this.apiUrl}/${userId}/pay`, paymentRequest);
+  }
+
+  // Favorits
+  getFavoritos(userId: string): Observable<Hotel[]> {
+    return this.http.get<Hotel[]>(`${this.apiUrl}/${userId}/favorits`);
+  }
+
+  addFavorite(userId: string, hotelId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${userId}/favorits/${hotelId}`, {});
+  }
+
+  removeFavorite(userId: string, hotelId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${userId}/favorits/${hotelId}`);
   }
 }

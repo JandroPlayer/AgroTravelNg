@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface ReservaAutobus {
+  pagada: boolean;
+  cancelant: boolean;
   id: string;
   autobus: { id: number };      // Referencia al autobús
   fechaReserva: Date;           // Fecha y hora combinadas
@@ -58,7 +60,7 @@ export class ReservaAutobusService {
     return this.http.put(`${this.apiUrl}/${reservaId}/pagar`, {});
   }
 
-  deleteReserva(id: number): Observable<any> {
+  deleteReserva(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 

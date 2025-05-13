@@ -7,11 +7,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class Logica {
   constructor(private snackBar: MatSnackBar) {}
 
-  showSnackBar(message: string, type: 'success' | 'error' | 'info' = 'success'): void {
+  showSnackBar(message: string, type: 'success' | 'error' | 'warning' | 'info' = 'success'): void {
     this.snackBar.open(message, '', {
-      duration: type === 'info' ? undefined : 3000, // El snackbar d'informació no desapareix automàticament
+      duration: type === 'info' ? undefined : 3000,
       verticalPosition: 'top',
-      panelClass: [type] // Utilitza les classes de CSS corresponents a cada tipus
+      panelClass: [type]
     });
   }
 

@@ -4,13 +4,13 @@ import { AutobusosService, Autobus } from '../../services/autobusos.service';
 import { ReservaAutobusService } from '../../services/reservautobus.service';
 import { UserService } from '../../services/user.service';
 import { NavbarComponent } from '../navbar/navbar.component';
-import {NgIf, NgForOf, CurrencyPipe} from '@angular/common';
+import { NgIf, NgForOf, CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {Logica} from '../../logica/logica';
 
 @Component({
   selector: 'app-reserva-autobus',
@@ -19,7 +19,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   standalone: true,
   imports: [
     NgIf,
-    ReactiveFormsModule, // Afegir ReactiveFormsModule aquí
+    ReactiveFormsModule,
     NgForOf,
     MatFormField,
     MatInput,
@@ -42,9 +42,7 @@ export class ReservaAutobusComponent implements OnInit {
     '08:00', '09:00', '10:00', '11:00', '12:00',
     '13:00', '14:00', '15:00', '16:00', '17:00'
   ];
-  missatge: string | null = null;
 
-  // Formulari reactiu
   reservaForm: FormGroup;
 
   constructor(
@@ -52,9 +50,8 @@ export class ReservaAutobusComponent implements OnInit {
     private reservaAutobusService: ReservaAutobusService,
     private route: ActivatedRoute,
     private userService: UserService,
-    private snackBar: MatSnackBar
+    private logica: Logica
   ) {
-    // Inicialitzar el formulari reactiu
     this.reservaForm = new FormGroup({
       startDate: new FormControl(null, Validators.required),
       startTime: new FormControl('', Validators.required),
@@ -81,7 +78,12 @@ export class ReservaAutobusComponent implements OnInit {
 
       const fechaReserva = `${startDate.toISOString().split('T')[0]}T${startTime}:00`;
 
-      // Calcula el preuTotal aquí
+      // Validar la cantidad de pasajeros con la capacidad del autobús
+      if (numPassatgers > this.autobus.capacitatPassatgers) {
+        this.logica.showSnackBar(`La cantidad de pasajeros no puede exceder la capacidad del autobús (${this.autobus.capacitatPassatgers})`, 'warning');
+        return; // Si hay un error, salimos de la función
+      }
+
       const preuTotal = this.autobus.preuPerPersona * numPassatgers;
 
       const reservaData = {
@@ -94,26 +96,17 @@ export class ReservaAutobusComponent implements OnInit {
 
       this.reservaAutobusService.createReserva(reservaData).subscribe(
         (response) => {
-          console.log('Reserva realitzada', response);
+          console.log('Reserva realizada', response);
           this.reservaForm.reset();
-          this.snackBar.open('Reserva realitzada amb èxit!', 'Tancar', {
-            duration: 3000,
-            panelClass: ['success']
-          });
+          this.logica.showSnackBar('Reserva realizada con éxito!', 'success');
         },
         (error) => {
           console.error('Error en la reserva', error);
-          this.snackBar.open('Error al fer la reserva.', 'Tancar', {
-            duration: 3000,
-            panelClass: ['error']
-          });
+          this.logica.showSnackBar('Error al realizar la reserva.', 'error');
         }
       );
     } else {
-      this.snackBar.open('Has d’introduir totes les dades del formulari.', 'Tancar', {
-        duration: 3000,
-        panelClass: ['warning']
-      });
+      this.logica.showSnackBar('Debes introducir todos los datos del formulario.', 'warning');
     }
   }
 
@@ -121,5 +114,4 @@ export class ReservaAutobusComponent implements OnInit {
     const num = this.reservaForm.get('numPassatgers')?.value || 0;
     return this.autobus ? this.autobus.preuPerPersona * num : 0;
   }
-
 }

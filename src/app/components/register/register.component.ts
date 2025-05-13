@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {HttpClient} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {firstValueFrom} from 'rxjs';
+import {Logica} from '../../logica/logica';
 
 
 @Component({
@@ -19,7 +19,6 @@ export class RegisterComponent {
   user: any = { name: '', email: '', password: '', img: '' };
   selectedFile: File | null = null;
   message = '';
-  isSuccess: boolean = false;
 
   emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   passwordPattern = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
@@ -30,8 +29,8 @@ export class RegisterComponent {
   constructor(
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar,
-    private http: HttpClient
+    private http: HttpClient,
+    private logica: Logica
   ) {}
 
   onFileSelected(event: any) {
@@ -40,50 +39,57 @@ export class RegisterComponent {
 
   async register() {
     if (!this.user.name || !this.user.email || !this.user.password) {
-      this.showSnackbar('Por favor, completa todos los campos.', false);
+      this.logica.showSnackBar('Por favor, completa todos los campos.', "error");
       return;
     }
 
     if (!this.emailPattern.test(this.user.email)) {
-      this.showSnackbar('Correo electrónico inválido.', false);
+      this.logica.showSnackBar('Correo electrónico inválido.', "error");
       return;
     }
 
     if (!this.passwordPattern.test(this.user.password)) {
-      this.showSnackbar('La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.', false);
+      this.logica.showSnackBar(
+        'La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.',
+        "error"
+      );
       return;
     }
 
     try {
-      // Subir imagen si se ha seleccionado una
       if (this.selectedFile) {
         this.user.img = await this.uploadImageToCloudinary(this.selectedFile);
       } else {
-        // Si no hay imagen, usar avatar generado
         const initials = this.user.name.trim().split(' ')
           .map((n: string) => n[0])
           .join('')
           .toUpperCase();
-
         this.user.img = `https://ui-avatars.com/api/?name=${initials}&background=random&color=fff&size=128`;
       }
 
-      // Metodo para registrar usuario
+      // 🚨 DEBUG: Mostrar datos antes de enviar
+      console.log('📦 Datos a enviar al backend:');
+      console.log(JSON.stringify(this.user, null, 2));
+
+      // Enviar al backend
       this.userService.register(this.user).subscribe({
-        next: () => {
-          this.message = 'Usuario registrado con éxito!';
-          this.isSuccess = true;
-          this.showSnackbar(this.message, this.isSuccess);
-          setTimeout(() => this.goToLogin(), 3000);
+        next: (res: any) => {
+          console.log('✅ Respuesta del backend:', res);
+          this.message = res.message;
+          this.logica.showSnackBar(this.message, res.status);
+          if (res.status === 'success') {
+            setTimeout(() => this.goToLogin(), 3000);
+          }
         },
         error: (err: any) => {
+          console.error('❌ Error recibido del backend:', err);
           this.message = err.error?.message || err.error || 'Ocurrió un error inesperado';
-          this.isSuccess = false;
-          this.showSnackbar(this.message, this.isSuccess);
+          this.logica.showSnackBar(this.message, "error");
         }
       });
     } catch (uploadError) {
-      this.showSnackbar('Error al subir la imagen de perfil.', false);
+      console.error('❌ Error en el proceso de subida de imagen:', uploadError);
+      this.logica.showSnackBar('Error al subir la imagen de perfil.', "error");
     }
   }
 
@@ -123,15 +129,6 @@ export class RegisterComponent {
     return await firstValueFrom(
       this.http.get('http://localhost:3000/api/cloudinary-signature')
     );
-  }
-
-  showSnackbar(message: string, isSuccess: boolean) {
-    const snackType = isSuccess ? 'success' : 'error';
-    this.snackBar.open(message, '', {
-      duration: 3000,
-      verticalPosition: 'top',
-      panelClass: [snackType]
-    });
   }
 
   goToLogin() {

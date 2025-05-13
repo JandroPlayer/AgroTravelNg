@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { BookingService } from '../../services/booking.service';
 import { HotelService } from '../../services/hotel.service';
 import { UserService } from '../../services/user.service';
 import { CurrencyPipe, DatePipe, NgForOf, NgIf } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { ReservaAutobusService } from '../../services/reservautobus.service';
+import {ReservaAutobus, ReservaAutobusService} from '../../services/reservautobus.service';
 import {Logica} from '../../logica/logica';
 
 @Component({
@@ -31,7 +31,7 @@ export class BookingListComponent implements OnInit {
     private bookingService: BookingService,
     private hotelService: HotelService,
     private userService: UserService,
-    private logica: Logica
+    private logica: Logica,
   ) {}
 
   ngOnInit(): void {
@@ -87,8 +87,16 @@ export class BookingListComponent implements OnInit {
         this.userService.setUser(updatedUser);
         this.reservaAutobusService.pagarReserva(booking.id).subscribe({
           next: () => {
-            booking.pagada = true;
-            this.logica.showSnackBar('Pagament realitzat amb èxit.', 'success')
+            booking.pagada = true;  // Cambiar el estado a "pagada"
+            this.logica.showSnackBar('Pagament realitzat amb èxit.', 'success');
+          },
+          error: (err) => {
+            booking.pagant = false;
+            const missatge = err?.error?.message || 'Error en el pagament.';
+            this.logica.showSnackBar(missatge, 'error');
+          },
+          complete: () => {
+            booking.pagant = false;
           }
         });
       },
@@ -96,9 +104,21 @@ export class BookingListComponent implements OnInit {
         booking.pagant = false;
         const missatge = err?.error?.message || 'Error en el pagament.';
         this.logica.showSnackBar(missatge, 'error');
+      }
+    });
+  }
+
+  // Mètode para cargar todas las reservas desde el backend
+  carregarReserves(): void {
+    this.reservaAutobusService.getReservas().subscribe({
+      next: (reservas: ReservaAutobus[]) => {
+        // Actualizar la lista de reservas local
+        this.busBookings = reservas;
+        console.log('Reservas actualizadas:', this.busBookings);
       },
-      complete: () => {
-        booking.pagant = false;
+      error: (err) => {
+        this.logica.showSnackBar('Error al cargar las reservas.', 'error');
+        console.error('Error al cargar reservas:', err);
       }
     });
   }
@@ -128,17 +148,27 @@ export class BookingListComponent implements OnInit {
     });
   }
 
-  cancelarReserva(reservaId: number): void {
-    if (confirm('Estàs segur que vols cancel·lar aquesta reserva?')) {
-      this.reservaAutobusService.deleteReserva(reservaId).subscribe({
-        next: () => {
-          this.busBookings = this.busBookings.filter(r => r.id !== reservaId);
-        },
-        error: (err) => {
-          console.error('Error en cancel·lar la reserva:', err);
-          alert('No s\'ha pogut cancel·lar la reserva. Torna-ho a intentar.');
-        }
-      });
+  cancelarReserva(booking: ReservaAutobus): void {
+    if (!confirm('Estàs segur que vols cancel·lar aquesta reserva?')) {
+      return;
     }
+
+    booking.cancelant = true;
+
+    this.reservaAutobusService.deleteReserva(booking.id).subscribe({
+      next: () => {
+        this.logica.showSnackBar('Reserva cancel·lada correctament.', 'success');
+        this.carregarReserves(); // Refresca la llista
+      },
+      error: (err) => {
+        const missatge = err?.error?.message || 'Error al cancel·lar la reserva.';
+        this.logica.showSnackBar(missatge, 'error');
+        console.error('Error al cancel·lar reserva:', err);
+      },
+      complete: () => {
+        booking.cancelant = false;
+      }
+    });
   }
+
 }

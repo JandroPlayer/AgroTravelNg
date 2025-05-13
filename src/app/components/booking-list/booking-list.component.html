@@ -79,9 +79,11 @@
         <ng-template #pagat>✅</ng-template>
       </td>
       <td>
-        <button class="btn btn-danger btn-sm"
-                (click)="cancelarReserva(booking.id)">
-          Cancel·lar
+        <button
+          class="btn btn-danger"
+          [disabled]="booking.cancelant"
+          (click)="cancelarReserva(booking)">
+          {{ booking.cancelant ? 'Cancel·lant...' : 'Cancel·lar' }}
         </button>
       </td>
     </tr>

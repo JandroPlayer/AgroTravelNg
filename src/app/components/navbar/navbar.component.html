@@ -42,6 +42,9 @@
             <li>
               <a class="dropdown-item" [routerLink]="['/users', user?.id, 'bookings']">Reserves</a>
             </li>
+            <li>
+              <a class="dropdown-item" [routerLink]="['/users', user?.id, 'favoritos']">Favorits</a>
+            </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
               <a class="dropdown-item" (click)="logout()">Cerrar sesión</a>
