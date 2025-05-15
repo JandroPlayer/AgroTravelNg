@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AutobusosService, Autobus } from '../../services/autobusos.service';
+import { VehiclesElectricsService, Autobus } from '../../services/vehicleselectrics.service';
 import { GoogleMap } from '@angular/google-maps';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
@@ -26,12 +26,12 @@ export class AutobusesComponent implements OnInit {
   zoom = 8;
 
   constructor(
-    private autobusosService: AutobusosService,
+    private vehiclesElectricsService: VehiclesElectricsService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.autobusosService.getAutobusos().subscribe(data => {
+    this.vehiclesElectricsService.getAutobusos().subscribe(data => {
       this.autobusos = data;
     });
   }

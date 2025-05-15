@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h2 class="mb-4">🍽️ Gastronomia típica de Mallorca</h2>
+
+  <div *ngIf="carregant" class="alert alert-info">Carregant plats típics...</div>
+
+  <div class="row" *ngIf="!carregant && plats.length > 0; else capPlat">
+    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let plat of plats">
+      <div class="card h-100 shadow-sm rounded-4">
+        <img [src]="plat.imatge" alt="{{ plat.nom }}" class="card-img-top rounded-top-4" style="height: 200px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">{{ plat.nom }}</h5>
+          <p class="card-text">{{ plat.descripcio }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #capPlat>
+    <div class="alert alert-warning">No s'han trobat plats típics.</div>
+  </ng-template>
+</div>

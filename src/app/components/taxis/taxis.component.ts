@@ -1,26 +1,44 @@
-import { Component } from '@angular/core';
-import {GoogleMap, MapMarker} from '@angular/google-maps';
-import {NgForOf} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
+import {Taxi, VehiclesElectricsService} from '../../services/vehicleselectrics.service';
+import {NavbarComponent} from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-taxis',
   templateUrl: './taxis.component.html',
   imports: [
-    GoogleMap,
-    MapMarker,
-    NgForOf
-  ]
+    NavbarComponent,
+    NgIf,
+    NgForOf,
+    CurrencyPipe
+  ],
 })
-export class TaxisComponent {
-  rutas = [
-    { nombre: 'Taxi Centre - Aeroport', origen: 'Centre', destino: 'Aeroport El Prat' },
-    { nombre: 'Taxi Nord - Estació', origen: 'Horta', destino: 'Sants Estació' }
-  ];
+export class TaxisComponent implements OnInit {
 
-  center = { lat: 41.3902, lng: 2.1540 };
-  zoom = 12;
-  markers = [
-    { position: { lat: 41.3902, lng: 2.154 }, label: 'T1', title: 'Taxi Centre' },
-    { position: { lat: 41.43, lng: 2.14 }, label: 'T2', title: 'Taxi Nord' }
-  ];
+  taxis: Taxi[] = [];
+  loading: boolean = false;
+  error: string | null = null;
+
+  constructor(private vehiclesService: VehiclesElectricsService) {}
+
+  ngOnInit(): void {
+    this.loadTaxis();
+  }
+
+  loadTaxis(): void {
+    this.loading = true;
+    this.error = null;
+
+    this.vehiclesService.getTaxis().subscribe({
+      next: (data) => {
+        this.taxis = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar los taxis.';
+        this.loading = false;
+        console.error(err);
+      }
+    });
+  }
 }

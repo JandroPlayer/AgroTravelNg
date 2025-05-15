@@ -28,8 +28,8 @@
   <div class="container my-4">
     <h2 class="text-center mb-4">Llista d'Hotels</h2>
 
-    <div *ngIf="filteredHotels?.length; else noHotels" class="d-flex flex-column gap-4 overflow-auto" style="max-height: 80vh; padding-right: 10px;">
-      <div class="card shadow-sm" *ngFor="let hotel of filteredHotels">
+    <div *ngIf="filteredHotels?.length; else noHotels" class="d-flex flex-column gap-4">
+    <div class="card shadow-sm" *ngFor="let hotel of filteredHotels">
         <div class="row g-0">
 
           <!-- Imatge amb placeholder, mida fixa i carregament vagarós -->

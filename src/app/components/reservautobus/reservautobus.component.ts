@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AutobusosService, Autobus } from '../../services/autobusos.service';
+import { Autobus, VehiclesElectricsService } from '../../services/vehicleselectrics.service';
 import { ReservaAutobusService } from '../../services/reservautobus.service';
 import { UserService } from '../../services/user.service';
 import { NavbarComponent } from '../navbar/navbar.component';
@@ -46,7 +46,7 @@ export class ReservaAutobusComponent implements OnInit {
   reservaForm: FormGroup;
 
   constructor(
-    private autobusosService: AutobusosService,
+    private vehiclesElectricsService: VehiclesElectricsService,
     private reservaAutobusService: ReservaAutobusService,
     private route: ActivatedRoute,
     private userService: UserService,
@@ -61,7 +61,7 @@ export class ReservaAutobusComponent implements OnInit {
 
   ngOnInit(): void {
     const autobusId = Number(this.route.snapshot.paramMap.get('id'));
-    this.autobusosService.getAutobusos().subscribe((data) => {
+    this.vehiclesElectricsService.getAutobusos().subscribe((data) => {
       this.autobusos = data;
       this.autobus = this.autobusos.find(bus => bus.id === autobusId) || null;
     });

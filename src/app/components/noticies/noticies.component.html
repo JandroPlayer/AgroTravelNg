@@ -1,0 +1,39 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h2 class="mb-4">📰 Notícies d’agroturisme i Mallorca</h2>
+
+  <!-- Controls paginació (A DALT) -->
+  <nav *ngIf="!carregant && totalPagines > 1" aria-label="Paginació notícies">
+    <ul class="pagination justify-content-center mb-4">
+      <li class="page-item" [class.disabled]="paginaActual === 1">
+        <button class="page-link" (click)="paginaAnterior()" [disabled]="paginaActual === 1">Anterior</button>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          Pàgina {{ paginaActual }} de {{ totalPagines }}
+        </span>
+      </li>
+      <li class="page-item" [class.disabled]="paginaActual === totalPagines">
+        <button class="page-link" (click)="paginaSeguent()" [disabled]="paginaActual === totalPagines">Següent</button>
+      </li>
+    </ul>
+  </nav>
+
+  <div *ngIf="carregant" class="alert alert-info">Carregant notícies...</div>
+
+  <div class="row" *ngIf="!carregant">
+    <div class="col-md-4 mb-4" *ngFor="let noticia of noticiesPaginades">
+      <div class="card h-100 shadow-sm">
+        <img *ngIf="noticia.urlToImage" [src]="noticia.urlToImage" class="card-img-top" alt="Imatge notícia">
+        <div class="card-body">
+          <h5 class="card-title">{{ noticia.title }}</h5>
+          <p class="card-text">{{ noticia.description }}</p>
+        </div>
+        <div class="card-footer text-end">
+          <a [href]="noticia.url" target="_blank" class="btn btn-outline-primary btn-sm">Llegir més</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

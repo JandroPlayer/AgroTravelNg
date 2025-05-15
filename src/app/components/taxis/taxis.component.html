@@ -1,14 +1,46 @@
-<h2>Rutes de Taxis Elèctrics</h2>
-<ul>
-  <li *ngFor="let ruta of rutas">
-    {{ ruta.nombre }}: {{ ruta.origen }} → {{ ruta.destino }}
-  </li>
-</ul>
+<app-navbar></app-navbar>
 
-<google-map [center]="center" [zoom]="zoom" height="400px" width="100%">
-  <map-marker *ngFor="let m of markers"
-              [position]="m.position"
-              [label]="m.label"
-              [title]="m.title">
-  </map-marker>
-</google-map>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="mb-4">🚖 Llista de taxis elèctrics</h2>
+
+      <div *ngIf="taxis.length > 0; else carregant">
+        <div class="card mb-4 rounded-4 shadow-sm" *ngFor="let taxi of taxis">
+          <div class="row g-0 align-items-center">
+            <!-- Columna imatge -->
+            <div class="col-md-4 d-flex justify-content-center align-items-center p-3">
+              <img [src]="taxi.imageUrl"
+                   alt="Imatge del taxi"
+                   class="img-fluid rounded-4 shadow-sm"
+                   style="max-height: 150px; object-fit: contain;">
+            </div>
+
+            <!-- Columna contingut -->
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{ taxi.marca }} {{ taxi.model }}</h5>
+                <p class="card-text">
+                  <strong>Any:</strong> {{ taxi.anyFabricacio }}<br>
+                  <strong>Autonomia:</strong> {{ taxi.autonomiaKm }} km<br>
+                  <strong>Llicència:</strong> {{ taxi.numLlicencia }}<br>
+                  <strong>Tarifa base:</strong> {{ taxi.tarifaBase | currency:'EUR':'symbol':'1.2-2' }}<br>
+                  <strong>Cost per km:</strong> {{ taxi.costPerKm | currency:'EUR':'symbol':'1.2-2' }}
+                </p>
+                <!-- Aquí pots afegir botons o altres controls si vols -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #carregant>
+        <div class="alert alert-info">Carregant taxis...</div>
+      </ng-template>
+
+      <div *ngIf="!loading && taxis.length === 0" class="alert alert-warning">
+        No hi ha taxis disponibles.
+      </div>
+    </div>
+  </div>
+</div>
