@@ -28,6 +28,9 @@
                   <strong>Cost per km:</strong> {{ taxi.costPerKm | currency:'EUR':'symbol':'1.2-2' }}
                 </p>
                 <!-- Aquí pots afegir botons o altres controls si vols -->
+                <div class="d-flex justify-content-between mt-3">
+                  <a [routerLink]="['/reservataxi', taxi.id]" class="btn btn-primary btn-sm">Reservar</a>
+                </div>
               </div>
             </div>
           </div>

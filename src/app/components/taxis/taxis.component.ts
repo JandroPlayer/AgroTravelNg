@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Taxi, VehiclesElectricsService} from '../../services/vehicleselectrics.service';
 import {NavbarComponent} from '../navbar/navbar.component';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-taxis',
@@ -10,7 +11,8 @@ import {NavbarComponent} from '../navbar/navbar.component';
     NavbarComponent,
     NgIf,
     NgForOf,
-    CurrencyPipe
+    CurrencyPipe,
+    RouterLink
   ],
 })
 export class TaxisComponent implements OnInit {

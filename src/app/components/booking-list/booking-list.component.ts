@@ -6,6 +6,7 @@ import { CurrencyPipe, DatePipe, NgForOf, NgIf } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import {ReservaAutobus, ReservaAutobusService} from '../../services/reservautobus.service';
 import {Logica} from '../../logica/logica';
+import {ReservaTaxiService} from '../../services/reservataxi.service';
 
 @Component({
   selector: 'app-booking-list',
@@ -22,6 +23,7 @@ import {Logica} from '../../logica/logica';
 export class BookingListComponent implements OnInit {
   bookings: any[] = [];
   busBookings: any[] = [];
+  taxiBookings: any[] = [];
   user: any = {};
   currentUserId: string = '';
   hotelCache: Map<number, any> = new Map();
@@ -29,6 +31,7 @@ export class BookingListComponent implements OnInit {
   constructor(
     private reservaAutobusService: ReservaAutobusService,
     private bookingService: BookingService,
+    private reservaTaxiService: ReservaTaxiService,
     private hotelService: HotelService,
     private userService: UserService,
     private logica: Logica,
@@ -47,6 +50,11 @@ export class BookingListComponent implements OnInit {
       this.reservaAutobusService.getReservasAutobusByUser(this.currentUserId).subscribe(data => {
         this.busBookings = data;
       });
+
+      this.reservaTaxiService.getReservasTaxiByUser(this.currentUserId).subscribe(data => {
+        this.taxiBookings = data;
+      });
+
     }
   }
 

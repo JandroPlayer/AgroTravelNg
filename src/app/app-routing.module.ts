@@ -15,6 +15,7 @@ import {ActivitatsComponent} from './components/activitats/activitats.component'
 import {FavoritosComponent} from './components/favoritos/favoritos.component';
 import {GastronomiaComponent} from './components/gastronomia/gastronomia.component';
 import {NoticiesComponent} from './components/noticies/noticies.component';
+import {ReservaTaxiComponent} from './components/reserva-taxi/reservataxi.component';
 
 export const routes: Routes = [
   { path: 'hotels', component: HotelListComponent },
@@ -25,6 +26,7 @@ export const routes: Routes = [
   { path: 'reserva', component: BookingComponent },
   { path: 'reserva/:id', component: BookingComponent },
   { path: 'reservautobus/:id', component: ReservaAutobusComponent },
+  { path: 'reservataxi/:id', component: ReservaTaxiComponent },
   { path: 'autobuses', component: AutobusesComponent },
   { path: 'taxis', component: TaxisComponent },
   { path: 'busmap', component: BusMapComponent },

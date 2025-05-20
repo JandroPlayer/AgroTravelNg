@@ -37,19 +37,26 @@
     <div class="card-body">
       <h2 class="card-title text-center">Reserva per a {{ autobus.marca }} {{ autobus.model }}</h2>
       <form [formGroup]="reservaForm">
-        <mat-form-field appearance="fill">
-          <mat-label>Data d'inici</mat-label>
-          <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
-          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-          <mat-datepicker #startPicker></mat-datepicker>
-        </mat-form-field>
+        <!-- Data i Hora en una fila -->
+        <div class="row">
+          <!-- Data d'inici -->
+          <div class="col-md-6 mb-3">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Data d'inici</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
 
-        <mat-form-field appearance="fill" class="hora-select ms-2">
-          <mat-label>Hora</mat-label>
-          <mat-select formControlName="startTime">
-            <mat-option *ngFor="let time of availableTimes" [value]="time">{{ time }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <!-- Hora -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label"><strong>Hora:</strong></label>
+            <select class="form-select" formControlName="startTime">
+              <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+            </select>
+          </div>
+        </div>
 
         <!-- Fragment actualitzat -->
         <div class="mb-3">

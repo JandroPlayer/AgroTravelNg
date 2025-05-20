@@ -1,0 +1,106 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card mb-0 rounded-4 shadow-sm">
+        <div class="row g-0 align-items-center">
+          <!-- Columna imatge -->
+          <div class="col-md-4 d-flex justify-content-center align-items-center p-3">
+            <img [src]="taxi?.imageUrl"
+                 alt="Imatge del taxi"
+                 class="img-fluid rounded-4 shadow-sm"
+                 style="max-height: 150px; object-fit: contain;">
+          </div>
+
+          <!-- Columna contingut -->
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ taxi?.marca }} {{ taxi?.model }}</h5>
+              <p class="card-text">
+                <strong>Any:</strong> {{ taxi?.anyFabricacio }}<br>
+                <strong>Autonomia:</strong> {{ taxi?.autonomiaKm }} km<br>
+                <strong>Tarifa base:</strong> {{ taxi?.tarifaBase | currency:'EUR' }}<br>
+                <strong>Cost per km:</strong> {{ taxi?.costPerKm | currency:'EUR' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="taxi; else loading" class="container mt-4 mb-5">
+  <div class="row">
+    <!-- Formulario -->
+    <div class="col-md-7">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title text-center">Reserva per a {{ taxi.marca }} {{ taxi.model }}</h2>
+          <form [formGroup]="reservaForm" (ngSubmit)="confirmarReserva()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label"><strong>Origen:</strong></label>
+                <input type="text" class="form-control" formControlName="origen" placeholder="Punt de sortida" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label"><strong>Destí:</strong></label>
+                <input type="text" class="form-control" formControlName="desti" placeholder="Punt d'arribada" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label"><strong>Data:</strong></label>
+                <input type="date" class="form-control" formControlName="startDate" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label"><strong>Hora:</strong></label>
+                <select class="form-select" formControlName="startTime">
+                  <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label"><strong>Distància estimada (km):</strong></label>
+                <input type="number" class="form-control" formControlName="distanciaKm" />
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label"><strong>Preu estimat:</strong></label>
+                <input type="text" class="form-control" [value]="preuTotal | currency:'EUR'" readonly />
+              </div>
+            </div>
+
+            <div class="text-center mt-3">
+              <button class="btn btn-primary" type="submit">Confirmar reserva</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mapa -->
+    <div class="col-md-5">
+      <h5 class="text-center mb-3">🗺️ Ubicació sobre el mapa</h5>
+      <div class="border rounded shadow-sm" style="height: 350px; width: 100%;">
+        <div #mapContainer id="map" style="height: 100%; width: 100%; border-radius: 8px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregant dades del taxi...</span>
+      </div>
+      <p class="mt-2">Carregant dades del taxi...</p>
+    </div>
+  </div>
+</ng-template>
