@@ -1,29 +1,12 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  AfterViewInit
-} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  VehiclesElectricsService,
-  Taxi
-} from '../../services/vehicleselectrics.service';
+import { VehiclesElectricsService, Taxi } from '../../services/vehicleselectrics.service';
 import { ReservaTaxiService } from '../../services/reservataxi.service';
 import { UserService } from '../../services/user.service';
 import { NavbarComponent } from '../navbar/navbar.component';
-import {
-  NgIf,
-  NgForOf,
-  CurrencyPipe
-} from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormGroup,
-  FormControl,
-  Validators
-} from '@angular/forms';
+import { NgIf, NgForOf, CurrencyPipe } from '@angular/common';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
+import {Logica} from '../../logica/logica';
 
 @Component({
   selector: 'app-reserva-taxi',
@@ -39,6 +22,7 @@ import {
 })
 export class ReservaTaxiComponent implements OnInit, AfterViewInit {
   @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
+
   map!: google.maps.Map;
   origenMarker!: google.maps.Marker;
   destiMarker!: google.maps.Marker;
@@ -61,7 +45,8 @@ export class ReservaTaxiComponent implements OnInit, AfterViewInit {
     private vehiclesElectricsService: VehiclesElectricsService,
     private reservaTaxiService: ReservaTaxiService,
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private logica: Logica
   ) {
     this.reservaForm = new FormGroup({
       origen: new FormControl({ value: '', disabled: true }, Validators.required),
@@ -106,7 +91,7 @@ export class ReservaTaxiComponent implements OnInit, AfterViewInit {
 
     const options = {
       center: new google.maps.LatLng(39.5696, 2.6502),
-      zoom: 12
+      zoom: 10
     };
 
     this.map = new google.maps.Map(this.mapContainer.nativeElement, options);
@@ -237,16 +222,16 @@ export class ReservaTaxiComponent implements OnInit, AfterViewInit {
 
       this.reservaTaxiService.createReserva(reservaData).subscribe({
         next: () => {
-          this.resetForm()
-          alert('Reserva de taxi realitzada amb èxit!');
+          this.resetForm();
+          this.logica.showSnackBar('Reserva de taxi realitzada amb èxit!', 'success');
         },
         error: (error) => {
           console.error('Error en la reserva', error);
-          alert('Error al fer la reserva de taxi.');
+          this.logica.showSnackBar('Error al fer la reserva de taxi.', 'error');
         }
       });
     } else {
-      alert('Completa tots els camps del formulari.');
+      this.logica.showSnackBar('Completa tots els camps del formulari.', 'warning');
     }
   }
 

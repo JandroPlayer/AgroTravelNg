@@ -17,6 +17,9 @@
       <th>Adults</th>
       <th>Nens</th>
       <th>Habitacions</th>
+      <th>Preu</th>
+      <th>Pagament</th>
+      <th>Accions</th>
       <th>Activitats</th>
     </tr>
     </thead>
@@ -29,6 +32,25 @@
       <td>{{ booking.adults }}</td>
       <td>{{ booking.children }}</td>
       <td>{{ booking.rooms }}</td>
+      <td>{{ booking.preu | currency:'EUR' }}</td>
+      <td>
+        <ng-container *ngIf="!booking.pagada; else pagat">
+          <button class="btn btn-success btn-sm"
+                  [disabled]="booking.pagant"
+                  (click)="pagarReservaHotel(booking)">
+            {{ booking.pagant ? 'Pagant...' : 'Pagar' }}
+          </button>
+        </ng-container>
+        <ng-template #pagat>✅</ng-template>
+      </td>
+      <td>
+        <button
+          class="btn btn-danger"
+          [disabled]="booking.cancelant"
+          (click)="cancelarReservaHotel(booking)">
+          {{ booking.cancelant ? 'Cancel·lant...' : 'Cancel·lar' }}
+        </button>
+      </td>
       <td>
         <button class="btn btn-outline-primary btn-sm"
                 (click)="onVeureActivitats(booking)"
@@ -72,7 +94,7 @@
         <ng-container *ngIf="!booking.pagada; else pagat">
           <button class="btn btn-success btn-sm"
                   [disabled]="booking.pagant"
-                  (click)="pagarReserva(booking)">
+                  (click)="pagarReservaAutobus(booking)">
             {{ booking.pagant ? 'Pagant...' : 'Pagar' }}
           </button>
         </ng-container>
@@ -82,7 +104,7 @@
         <button
           class="btn btn-danger"
           [disabled]="booking.cancelant"
-          (click)="cancelarReserva(booking)">
+          (click)="cancelarReservaAutobus(booking)">
           {{ booking.cancelant ? 'Cancel·lant...' : 'Cancel·lar' }}
         </button>
       </td>
@@ -109,6 +131,8 @@
       <th>Destí</th>
       <th>Distància (km)</th>
       <th>Preu</th>
+      <th>Pagament</th>
+      <th>Accions</th>
     </tr>
     </thead>
     <tbody>
@@ -120,6 +144,23 @@
       <td>{{ booking.desti }}</td>
       <td>{{ booking.distanciaKm }}</td>
       <td>{{ booking.preu | currency:'EUR' }}</td>
+      <td>
+        <ng-container *ngIf="!booking.pagada; else pagatTaxi">
+          <button class="btn btn-success btn-sm"
+                  [disabled]="booking.pagant"
+                  (click)="pagarReservaTaxi(booking)">
+            {{ booking.pagant ? 'Pagant...' : 'Pagar' }}
+          </button>
+        </ng-container>
+        <ng-template #pagatTaxi>✅</ng-template>
+      </td>
+      <td>
+        <button class="btn btn-danger btn-sm"
+                [disabled]="booking.cancelant"
+                (click)="cancelarReservaTaxi(booking)">
+          {{ booking.cancelant ? 'Cancel·lant...' : 'Cancel·lar' }}
+        </button>
+      </td>
     </tr>
     </tbody>
   </table>

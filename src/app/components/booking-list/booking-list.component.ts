@@ -81,41 +81,6 @@ export class BookingListComponent implements OnInit {
     booking.hotelLng = hotel.lng;
   }
 
-  pagarReserva(booking: any): void {
-    const user = this.userService.getUser();
-    if (!user) {
-      this.logica.showSnackBar('Has d’iniciar sessió per pagar.', 'error');
-      return;
-    }
-
-    booking.pagant = true;
-
-    this.userService.payForUser(user.id, booking.preu).subscribe({
-      next: (updatedUser) => {
-        this.userService.setUser(updatedUser);
-        this.reservaAutobusService.pagarReserva(booking.id).subscribe({
-          next: () => {
-            booking.pagada = true;  // Cambiar el estado a "pagada"
-            this.logica.showSnackBar('Pagament realitzat amb èxit.', 'success');
-          },
-          error: (err) => {
-            booking.pagant = false;
-            const missatge = err?.error?.message || 'Error en el pagament.';
-            this.logica.showSnackBar(missatge, 'error');
-          },
-          complete: () => {
-            booking.pagant = false;
-          }
-        });
-      },
-      error: (err) => {
-        booking.pagant = false;
-        const missatge = err?.error?.message || 'Error en el pagament.';
-        this.logica.showSnackBar(missatge, 'error');
-      }
-    });
-  }
-
   // Mètode para cargar todas las reservas desde el backend
   carregarReserves(): void {
     this.reservaAutobusService.getReservas().subscribe({
@@ -156,27 +121,31 @@ export class BookingListComponent implements OnInit {
     });
   }
 
-  cancelarReserva(booking: ReservaAutobus): void {
-    if (!confirm('Estàs segur que vols cancel·lar aquesta reserva?')) {
-      return;
-    }
-
-    booking.cancelant = true;
-
-    this.reservaAutobusService.deleteReserva(booking.id).subscribe({
-      next: () => {
-        this.logica.showSnackBar('Reserva cancel·lada correctament.', 'success');
-        this.carregarReserves(); // Refresca la llista
-      },
-      error: (err) => {
-        const missatge = err?.error?.message || 'Error al cancel·lar la reserva.';
-        this.logica.showSnackBar(missatge, 'error');
-        console.error('Error al cancel·lar reserva:', err);
-      },
-      complete: () => {
-        booking.cancelant = false;
-      }
-    });
+  pagarReservaAutobus(booking: any): void {
+    const user = this.userService.getUser();
+    this.logica.pagarReservaGenerico(booking, this.reservaAutobusService, this.busBookings, user?.id ?? '');
   }
 
+  cancelarReservaAutobus(booking: any): void {
+    this.logica.cancelarReservaGenerico(booking, this.reservaAutobusService, this.busBookings);
+  }
+
+  pagarReservaTaxi(booking: any): void {
+    const user = this.userService.getUser();
+    this.logica.pagarReservaGenerico(booking, this.reservaTaxiService, this.taxiBookings, user?.id ?? '');
+  }
+
+  cancelarReservaTaxi(booking: any): void {
+    this.logica.cancelarReservaGenerico(booking, this.reservaTaxiService, this.taxiBookings);
+  }
+
+// Para hoteles:
+  pagarReservaHotel(booking: any): void {
+    const user = this.userService.getUser();
+    this.logica.pagarReservaGenerico(booking, this.bookingService, this.bookings, user?.id ?? '');
+  }
+
+  cancelarReservaHotel(booking: any): void {
+    this.logica.cancelarReservaGenerico(booking, this.bookingService, this.bookings);
+  }
 }

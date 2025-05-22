@@ -62,34 +62,45 @@
                 <strong>Direcció:</strong> {{ hotel.address }} <br>
                 <strong>Lat/Lng:</strong> {{ hotel.lat }}, {{ hotel.lng }} <br>
                 <strong>Estrelles:</strong> {{ hotel.rating }} ⭐<br>
+                <strong>Habitacions disponibles:</strong> {{ hotel.availableRooms }}<br>
 
                 <span *ngIf="hotel.phone">
-                <strong>Telèfon:</strong>
-                <a [href]="'tel:' + hotel.phone">{{ hotel.phone }} 📞</a><br>
-              </span>
-
-                <span *ngIf="hotel.googleMapsUrl">
-                <a [href]="hotel.googleMapsUrl" target="_blank" class="btn btn-outline-primary btn-sm mt-2 me-2">📍 Mapa</a>
-              </span>
-
-                <span *ngIf="hotel.website">
-                <a [href]="hotel.website" target="_blank" class="btn btn-outline-secondary btn-sm mt-2">🌐 Web</a>
-              </span>
+                  <strong>Telèfon:</strong>
+                  <a [href]="'tel:' + hotel.phone">{{ hotel.phone }} 📞</a><br>
+                </span>
               </p>
 
-              <!-- Botones -->
+              <!-- Preu + Botons Mapa i Web -->
+              <div class="d-flex justify-content-between align-items-center flex-wrap mt-2">
+
+                <!-- Botons a l'esquerra -->
+                <div class="d-flex gap-2">
+                  <span *ngIf="hotel.googleMapsUrl">
+                    <a [href]="hotel.googleMapsUrl" target="_blank" class="btn btn-outline-primary btn-sm">📍 Mapa</a>
+                  </span>
+                  <span *ngIf="hotel.website">
+                    <a [href]="hotel.website" target="_blank" class="btn btn-outline-secondary btn-sm">🌐 Web</a>
+                  </span>
+                </div>
+
+                <!-- Preu a la dreta -->
+                <div>
+                  <span class="fw-bold" style="font-size: 1.1rem; color: #6f42c1;">
+                    💶 {{ hotel.pricePerNight }} €/nit
+                  </span>
+                </div>
+              </div>
+
+              <!-- Botons Inferiors -->
               <div class="d-flex justify-content-between mt-3">
                 <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary btn-sm">👁️ Veure detalls</a>
 
-                <!-- Botón para añadir a favoritos si no está en favoritos -->
                 <button (click)="addFavorite(hotel.id)" class="btn btn-outline-danger btn-sm">
                   ❤️ Afegir a Favorits
                 </button>
-
               </div>
-
             </div>
-          </div>
+        </div>
         </div>
       </div>
     </div>

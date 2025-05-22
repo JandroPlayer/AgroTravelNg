@@ -26,6 +26,12 @@ export class HotelService {
   getHotelByIdWithOutActivitats(hotelId: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${hotelId}/without-activities`);  // Asegúrate de que este endpoint no incluya actividades
   }
+
+  // hotel.service.ts
+  updateAvailableRooms(hotelId: number, roomsBooked: number) {
+    return this.http.put(`${this.apiUrl}/${hotelId}/update-available-rooms?roomsBooked=${roomsBooked}`, {});
+  }
+
 }
 
 export interface Hotel {
@@ -40,4 +46,6 @@ export interface Hotel {
   website: string;
   googleMapsUrl: string;
   imageUrl: string;
+  pricePerNight: number;
+  availableRooms: number;
 }

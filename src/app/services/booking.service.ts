@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+interface ReservaService {
+  pagarReserva(id: number): Observable<any>;
+  deleteReserva(id: number): Observable<any>;
+}
+
 export interface Booking {
   id: string;  // Agregar el campo 'id'
   hotel: { id: number };
@@ -15,7 +20,7 @@ export interface Booking {
 @Injectable({
   providedIn: 'root'
 })
-export class BookingService {
+export class BookingService implements ReservaService {
   private apiUrl = 'http://localhost:8080/api/reservas';
 
   constructor(private http: HttpClient) {}
@@ -45,5 +50,15 @@ export class BookingService {
 
   loadActivitatsPerReserva(idReserva: number): Observable<string> {
     return this.http.get(`${this.apiUrl}/${idReserva}/activitats/load`, { responseType: 'text' });
+  }
+
+  // Marcar reserva como pagada
+  pagarReserva(reservaId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${reservaId}/pagar`, {});
+  }
+
+  // Borrar reserva
+  deleteReserva(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

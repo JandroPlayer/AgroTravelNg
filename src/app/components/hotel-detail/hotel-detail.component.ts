@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HotelService } from '../../services/hotel.service';
 import { BookingService } from '../../services/booking.service';
 import { UserService } from '../../services/user.service';
-import { NgIf } from '@angular/common';
+import {CurrencyPipe, NgIf} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,17 +29,23 @@ import {Logica} from '../../logica/logica';
     MatNativeDateModule,
     MatDatepickerToggle,
     RouterLink,
-    NavbarComponent
+    NavbarComponent,
+    CurrencyPipe
   ],
   styleUrls: ['./hotel-detail.component.css']
 })
 export class HotelDetailComponent implements OnInit {
   hotel: any;
-  startDate: Date | null = null;
-  endDate: Date | null = null;
+  startDate!: Date;
+  endDate!: Date;
+  pricePerNight!: number; // precio por noche que viene del hotel
+  totalPrice: number = 0;
   numAdults: number = 2;
   numChildren: number = 0;
   numRooms: number = 1;
+  availableRooms: number = 0;
+  favoritos: any[] = [];
+  user: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -47,7 +53,8 @@ export class HotelDetailComponent implements OnInit {
     private bookingService: BookingService,
     private userService: UserService,
     private logica: Logica
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const hotelId = this.route.snapshot.paramMap.get('id');
@@ -55,6 +62,7 @@ export class HotelDetailComponent implements OnInit {
       this.hotelService.getHotelByIdWithOutActivitats(hotelId).subscribe({
         next: (data) => {
           this.hotel = data;
+          this.pricePerNight = this.hotel.pricePerNight;
           console.log('Hotel carregat: ', this.hotel);
         },
         error: (error) => this.logica.showSnackBar('Error carregant l’hotel: ' + error, 'error')
@@ -68,11 +76,28 @@ export class HotelDetailComponent implements OnInit {
       return;
     }
 
+    if (this.numAdults < 1 || this.numAdults > 30) {
+      this.logica.showSnackBar('El nombre d\'adults ha de ser entre 1 i 30', 'error');
+      return;
+    }
+
+    if (this.numChildren < 0 || this.numChildren > 10) {
+      this.logica.showSnackBar('El nombre de nens ha de ser entre 0 i 10', 'error');
+      return;
+    }
+
+    if (this.numRooms < 1 || this.numRooms > this.hotel.availableRooms) {
+      this.logica.showSnackBar(`El nombre d'habitacions ha de ser entre 1 i ${this.hotel.availableRooms}`, 'error');
+      return;
+    }
+
     const user = this.userService.getUser();
     if (!user) {
       this.logica.showSnackBar('Has d’estar autenticat per fer una reserva.', 'error');
       return;
     }
+
+    this.calcularTotalReserva();
 
     const booking = {
       hotel: {
@@ -85,13 +110,28 @@ export class HotelDetailComponent implements OnInit {
       endDate: this.endDate,
       adults: this.numAdults,
       children: this.numChildren,
-      rooms: this.numRooms
+      rooms: this.numRooms, // habitaciones que selecciona el usuario
+      pricePerNight: this.pricePerNight,
+      preu: this.totalPrice,
+      availableRooms: this.availableRooms // habitaciones disponibles del hotel
     };
+
 
     this.bookingService.addBooking(booking).subscribe({
       next: (response) => {
         console.log('Reserva confirmada:', response);
         this.logica.showSnackBar('Reserva confirmada amb èxit!', 'success');
+
+        // Actualizamos habitaciones disponibles
+        this.hotelService.updateAvailableRooms(this.hotel.id, this.numRooms).subscribe({
+          next: () => {
+            this.hotel.availableRooms -= this.numRooms;  // Actualizamos localmente también
+            console.log('Habitacions disponibles actualitzades');
+          },
+          error: (err) => {
+            console.error('Error al actualitzar les habitacions disponibles:', err);
+          }
+        });
       },
       error: (err) => {
         console.error('Error al confirmar la reserva:', err);
@@ -99,4 +139,51 @@ export class HotelDetailComponent implements OnInit {
       }
     });
   }
+
+
+  calcularTotalReserva(): void {
+    if (!this.startDate || !this.endDate) {
+      this.totalPrice = 0;
+      return;
+    }
+
+    const diffTime = this.endDate.getTime() - this.startDate.getTime();
+    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 1) diffDays = 1;
+
+    // Personas ponderadas: adultos + 0.5 * niños
+    const personasPonderadas = this.numAdults + 0.5 * this.numChildren;
+
+    // Total = días * precio por noche * número de habitaciones * personas ponderadas
+    this.totalPrice = diffDays * this.pricePerNight * this.numRooms * personasPonderadas;
+  }
+
+
+  addFavorite(hotelId: string): void {
+    if (this.user?.id) {
+      // Evita enviar la petición si ya existe en favoritos
+      const yaEsFavorit = this.favoritos.some(fav => fav.hotelId === hotelId);
+      if (yaEsFavorit) {
+        this.logica.showSnackBar('Aquest hotel ja està als teus favorits', 'info');
+        return;
+      }
+
+      this.userService.addFavorite(this.user.id, hotelId).subscribe({
+        next: response => {
+          const msg = response?.message;
+          if (msg === "Aquest hotel ja està als teus favorits") {
+            this.logica.showSnackBar(msg, 'info');
+          } else {
+            this.logica.showSnackBar(msg, 'success');
+            this.favoritos.push(hotelId); // si lo gestionas localmente
+          }
+        },
+        error: () => {
+          this.logica.showSnackBar('Error inesperat', 'error');
+        }
+      });
+    }
+  }
 }
+

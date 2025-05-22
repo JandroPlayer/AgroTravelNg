@@ -9,32 +9,52 @@
         <img [src]="hotel.imageUrl" [alt]="hotel.name" class="img-fluid rounded-start shadow-sm h-100 object-fit-cover" />
       </div>
 
-      <!-- Dades a la dreta (col-md-8 ocupa el 66% en pantallas medianas o más grandes) -->
+      <!-- Dades a la dreta -->
       <div class="col-md-8">
         <div class="card-body">
-          <h2 class="card-title text-center mb-3">{{ hotel.name }}</h2>
-          <p><strong>Direcció:</strong> {{ hotel.address }}</p>
-          <p><strong>Lat/Lng:</strong> {{ hotel.lat }}, {{ hotel.lng }}</p>
-          <p><strong>Estrelles:</strong> ⭐ {{ hotel.rating }}</p>
+          <h5 class="card-title text-center">{{ hotel.name }}</h5>
 
-          <p *ngIf="hotel.phone">
-            <strong>Telèfon:</strong>
-            <a [href]="'tel:' + hotel.phone">{{ hotel.phone }} 📞</a>
+          <p class="card-text">
+            <strong>Direcció:</strong> {{ hotel.address }} <br>
+            <strong>Lat/Lng:</strong> {{ hotel.lat }}, {{ hotel.lng }} <br>
+            <strong>Estrelles:</strong> {{ hotel.rating }} ⭐<br>
+            <strong>Habitacions disponibles:</strong> {{ hotel.availableRooms }}<br>
+
+            <span *ngIf="hotel.phone">
+                  <strong>Telèfon:</strong>
+                  <a [href]="'tel:' + hotel.phone">{{ hotel.phone }} 📞</a><br>
+                </span>
           </p>
 
-          <!-- Enllaços externs -->
-          <div class="mb-3">
-            <a *ngIf="hotel.googleMapsUrl" [href]="hotel.googleMapsUrl" target="_blank" class="btn btn-outline-primary btn-sm me-2">
-              📍 Veure al mapa
-            </a>
+          <!-- Preu + Botons Mapa i Web -->
+          <div class="d-flex justify-content-between align-items-center flex-wrap mt-2">
+            <!-- Botons a l'esquerra -->
+            <div class="d-flex gap-2">
+              <span *ngIf="hotel.googleMapsUrl">
+                <a [href]="hotel.googleMapsUrl" target="_blank" class="btn btn-outline-primary btn-sm">📍 Mapa</a>
+              </span>
+              <span *ngIf="hotel.website">
+                <a [href]="hotel.website" target="_blank" class="btn btn-outline-secondary btn-sm">🌐 Web</a>
+              </span>
+            </div>
 
-            <a *ngIf="hotel.website" [href]="hotel.website" target="_blank" class="btn btn-outline-secondary btn-sm">
-              🌐 Pàgina web
-            </a>
+            <!-- Preu a la dreta -->
+            <div>
+              <span class="fw-bold" style="font-size: 1.1rem; color: #6f42c1;">
+                💶 {{ hotel.pricePerNight }} €/nit
+              </span>
+            </div>
+          </div>
+
+          <!-- Botó de Favorits a la fila següent -->
+          <div class="mt-2 text-end">
+            <button (click)="addFavorite(hotel.id)" class="btn btn-outline-danger btn-sm">
+              ❤️ Afegir a Favorits
+            </button>
           </div>
         </div>
+        </div>
       </div>
-    </div>
   </div>
 
   <!-- Formulario de reserva -->
@@ -47,14 +67,16 @@
         <label class="form-label"><strong>Selecciona les dates:</strong></label>
         <mat-form-field appearance="fill">
           <mat-label>Data d'inici</mat-label>
-          <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" />
+          <!-- Fecha inicio -->
+          <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" (ngModelChange)="calcularTotalReserva()" />
           <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
           <mat-datepicker #startPicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="ms-2">
           <mat-label>Data de finalització</mat-label>
-          <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" />
+          <!-- Fecha fin -->
+          <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" (ngModelChange)="calcularTotalReserva()" />
           <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
           <mat-datepicker #endPicker></mat-datepicker>
         </mat-form-field>
@@ -63,19 +85,35 @@
       <!-- Número d'adults -->
       <div class="mb-3">
         <label class="form-label"><strong>Nombre d'adults:</strong></label>
-        <input [(ngModel)]="numAdults" type="number" min="1" class="form-control" />
+        <input [(ngModel)]="numAdults" type="number" min="1" max="30" class="form-control" (ngModelChange)="calcularTotalReserva()" />
+        <div *ngIf="numAdults > 30" class="text-danger">
+          Màxim 30 adults.
+        </div>
       </div>
 
       <!-- Número de nens -->
       <div class="mb-3">
         <label class="form-label"><strong>Nombre de nens:</strong></label>
-        <input [(ngModel)]="numChildren" type="number" min="0" class="form-control" />
+        <input [(ngModel)]="numChildren" type="number" min="0" max="10" class="form-control" (ngModelChange)="calcularTotalReserva()" />
+        <div *ngIf="numChildren > 10" class="text-danger">
+          Màxim 10 nens.
+        </div>
       </div>
 
       <!-- Número d'habitacions -->
       <div class="mb-3">
         <label class="form-label"><strong>Nombre d'habitacions:</strong></label>
-        <input [(ngModel)]="numRooms" type="number" min="1" class="form-control" />
+        <!-- Número de habitaciones -->
+        <input [(ngModel)]="numRooms" type="number" min="1" max="30" class="form-control" (ngModelChange)="calcularTotalReserva()" />
+        <div *ngIf="numRooms > 30" class="text-danger">
+          Màxim 30 habitacions.
+        </div>
+      </div>
+
+      <!-- Precio total calculado -->
+      <div class="mb-3">
+        <label class="form-label"><strong>Preu total:</strong></label>
+        <input class="form-control" [value]="totalPrice | currency:'EUR'" readonly />
       </div>
 
       <div class="text-center mt-3">
@@ -88,6 +126,7 @@
   <div class="d-flex justify-content-between mt-4">
     <a routerLink="/hotels" class="btn btn-secondary">⬅️ Tornar</a>
   </div>
+
 </div>
 
 <!-- Plantilla de càrrega -->

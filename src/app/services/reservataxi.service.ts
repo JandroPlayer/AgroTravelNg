@@ -2,6 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 
+interface ReservaService {
+  pagarReserva(id: number): Observable<any>;
+  deleteReserva(id: number): Observable<any>;
+}
+
 export interface ReservaTaxi {
   taxi: { id: number };
   user: { id: number };
@@ -16,7 +21,7 @@ export interface ReservaTaxi {
 @Injectable({
   providedIn: 'root'
 })
-export class ReservaTaxiService {
+export class ReservaTaxiService implements ReservaService {
 
   private apiUrl = 'http://localhost:8080/api/reservas-taxis';
 

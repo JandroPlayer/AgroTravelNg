@@ -8,8 +8,7 @@ import { NgIf, NgForOf, CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
-import { MatNativeDateModule, MatOption } from '@angular/material/core';
-import { MatSelect } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
 import {Logica} from '../../logica/logica';
 
 @Component({
@@ -28,8 +27,6 @@ import {Logica} from '../../logica/logica';
     MatDatepickerToggle,
     MatDatepickerInput,
     MatNativeDateModule,
-    MatOption,
-    MatSelect,
     NavbarComponent,
     MatSuffix,
     CurrencyPipe
