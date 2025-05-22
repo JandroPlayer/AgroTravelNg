@@ -52,11 +52,12 @@ export class HotelDetailComponent implements OnInit {
     private hotelService: HotelService,
     private bookingService: BookingService,
     private userService: UserService,
-    private logica: Logica
+    private logica: Logica,
   ) {
   }
 
   ngOnInit(): void {
+    this.user = this.userService.getUser();
     const hotelId = this.route.snapshot.paramMap.get('id');
     if (hotelId) {
       this.hotelService.getHotelByIdWithOutActivitats(hotelId).subscribe({
@@ -159,31 +160,8 @@ export class HotelDetailComponent implements OnInit {
     this.totalPrice = diffDays * this.pricePerNight * this.numRooms * personasPonderadas;
   }
 
-
   addFavorite(hotelId: string): void {
-    if (this.user?.id) {
-      // Evita enviar la petición si ya existe en favoritos
-      const yaEsFavorit = this.favoritos.some(fav => fav.hotelId === hotelId);
-      if (yaEsFavorit) {
-        this.logica.showSnackBar('Aquest hotel ja està als teus favorits', 'info');
-        return;
-      }
-
-      this.userService.addFavorite(this.user.id, hotelId).subscribe({
-        next: response => {
-          const msg = response?.message;
-          if (msg === "Aquest hotel ja està als teus favorits") {
-            this.logica.showSnackBar(msg, 'info');
-          } else {
-            this.logica.showSnackBar(msg, 'success');
-            this.favoritos.push(hotelId); // si lo gestionas localmente
-          }
-        },
-        error: () => {
-          this.logica.showSnackBar('Error inesperat', 'error');
-        }
-      });
-    }
+    this.logica.addFavoritHotel(hotelId, this.user?.id || '', this.favoritos, this.userService);
   }
 }
 

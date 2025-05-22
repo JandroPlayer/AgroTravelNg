@@ -81,21 +81,6 @@ export class BookingListComponent implements OnInit {
     booking.hotelLng = hotel.lng;
   }
 
-  // Mètode para cargar todas las reservas desde el backend
-  carregarReserves(): void {
-    this.reservaAutobusService.getReservas().subscribe({
-      next: (reservas: ReservaAutobus[]) => {
-        // Actualizar la lista de reservas local
-        this.busBookings = reservas;
-        console.log('Reservas actualizadas:', this.busBookings);
-      },
-      error: (err) => {
-        this.logica.showSnackBar('Error al cargar las reservas.', 'error');
-        console.error('Error al cargar reservas:', err);
-      }
-    });
-  }
-
   // Metode per utilitzar l'endpoint que carrega les activitats properes de l'hotel de la reserva
   onVeureActivitats(booking: any): void {
     this.logica.showSnackBar('Carregant...', 'info');  // Aquí s'envia 'info'
@@ -139,7 +124,6 @@ export class BookingListComponent implements OnInit {
     this.logica.cancelarReservaGenerico(booking, this.reservaTaxiService, this.taxiBookings);
   }
 
-// Para hoteles:
   pagarReservaHotel(booking: any): void {
     const user = this.userService.getUser();
     this.logica.pagarReservaGenerico(booking, this.bookingService, this.bookings, user?.id ?? '');

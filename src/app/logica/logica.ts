@@ -14,7 +14,7 @@ export class Logica {
 
   showSnackBar(message: string, type: 'success' | 'error' | 'warning' | 'info' = 'success'): void {
     this.snackBar.open(message, '', {
-      duration: type === 'info' ? undefined : 3000,
+      duration: type === 'info' ? 3000 : 3000,
       verticalPosition: 'top',
       panelClass: [type]
     });
@@ -24,7 +24,7 @@ export class Logica {
   pagarReservaGenerico(
     booking: any,
     reservaService: { pagarReserva(id: number): Observable<any> },
-    listaReservas: any[],
+    _listaReservas: any[],
     userId: number
   ): void {
     if (!userId) {
@@ -84,6 +84,40 @@ export class Logica {
       },
       complete: () => {
         booking.cancelant = false;
+      }
+    });
+  }
+
+  addFavoritHotel(
+    hotelId: string,
+    userId: string,
+    favoritos: string[], // lista local de favoritos
+    userService: { addFavorite(userId: string, hotelId: string): Observable<any> },
+    callback?: () => void
+  ): void {
+    if (!userId) {
+      this.showSnackBar('Has d’iniciar sessió per afegir favorits.', 'error');
+      return;
+    }
+
+    if (favoritos.includes(hotelId)) {
+      this.showSnackBar('Aquest hotel ja està als teus favorits', 'info');
+      return;
+    }
+
+    userService.addFavorite(userId, hotelId).subscribe({
+      next: (response) => {
+        const msg = response?.message;
+        if (msg === 'Aquest hotel ja està als teus favorits') {
+          this.showSnackBar(msg, 'info');
+        } else {
+          this.showSnackBar(msg || 'Afegit als favorits!', 'success');
+          favoritos.push(hotelId); // Actualiza la lista local
+          callback?.();
+        }
+      },
+      error: () => {
+        this.showSnackBar('Error inesperat', 'error');
       }
     });
   }

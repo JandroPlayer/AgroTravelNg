@@ -67,28 +67,6 @@ export class HotelListComponent implements OnInit {
   }
 
   addFavorite(hotelId: string): void {
-    if (this.user?.id) {
-      // Evita enviar la petición si ya existe en favoritos
-      const yaEsFavorit = this.favoritos.some(fav => fav.hotelId === hotelId);
-      if (yaEsFavorit) {
-        this.logica.showSnackBar('Aquest hotel ja està als teus favorits', 'info');
-        return;
-      }
-
-      this.userService.addFavorite(this.user.id, hotelId).subscribe({
-        next: response => {
-          const msg = response?.message;
-          if (msg === "Aquest hotel ja està als teus favorits") {
-            this.logica.showSnackBar(msg, 'info');
-          } else {
-            this.logica.showSnackBar(msg, 'success');
-            this.favoritos.push(hotelId); // si lo gestionas localmente
-          }
-        },
-        error: () => {
-          this.logica.showSnackBar('Error inesperat', 'error');
-        }
-      });
-    }
-    }
+    this.logica.addFavoritHotel(hotelId, this.user?.id || '', this.favoritos, this.userService);
+  }
 }
