@@ -4,7 +4,7 @@
 <div class="container mt-4">
   <div class="project-description mb-4">
     <h1 class="text-center">Plataforma Integral de Turisme Sostenible a Mallorca</h1>
-    <p class="text-center">
+    <p style="text-align: justify">
       Aquest projecte té com a objectiu crear una plataforma digital integral que no només millori l'accessibilitat al transport públic a Mallorca, sinó que també promogui l'agroturisme mitjançant la integració d'hotels rústics i activitats agrícoles. La plataforma permetrà als turistes reservar autobusos des de i cap a l'Aeroport de Palma, descobrir i participar en experiències d'agroturisme a finques i hotels rústics, així com explorar la gastronomia local. Tot això sota un enfocament sostenible, ecològic i culturalment enriquidor.
     </p>
   </div>
@@ -12,12 +12,22 @@
   <!-- FILTROS -->
   <div class="container mb-4">
     <div class="row">
-      <div class="col-md-12 mb-2">
+      <div class="col-md-6 mb-2">
         <input
           type="text"
           class="form-control"
           placeholder="Cerca per nom d'hotel..."
           [(ngModel)]="filtroNombre"
+          (input)="aplicarFiltros()"
+        />
+      </div>
+
+      <div class="col-md-6 mb-2">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Preu màxim per nit (€)..."
+          [(ngModel)]="filtroPreuMaxim"
           (input)="aplicarFiltros()"
         />
       </div>

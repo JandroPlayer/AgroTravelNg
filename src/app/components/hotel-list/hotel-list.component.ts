@@ -24,6 +24,7 @@ export class HotelListComponent implements OnInit {
   hotels: any[] = [];
   filteredHotels: any[] = [];
   filtroNombre: string = '';
+  filtroPreuMaxim: number | null = null;
   user: any = {};
   currentUserId: string = '';
   favoritos: any[] = [];
@@ -62,9 +63,13 @@ export class HotelListComponent implements OnInit {
 
   aplicarFiltros() {
     this.filteredHotels = this.hotels.filter(hotel => {
-      return hotel.name.toLowerCase().includes(this.filtroNombre.toLowerCase());
+      const coincideixNom = hotel.name.toLowerCase().includes(this.filtroNombre.toLowerCase());
+      const coincideixPreu = this.filtroPreuMaxim == null || hotel.pricePerNight <= this.filtroPreuMaxim;
+
+      return coincideixNom && coincideixPreu;
     });
   }
+
 
   addFavorite(hotelId: string): void {
     this.logica.addFavoritHotel(hotelId, this.user?.id || '', this.favoritos, this.userService);
