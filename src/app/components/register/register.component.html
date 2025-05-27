@@ -53,6 +53,20 @@
             />
           </div>
 
+          <!-- Repetir Contraseña -->
+          <div class="mb-3">
+            <label for="repeatPassword" class="form-label">Repetir Contraseña:</label>
+            <input
+              type="password"
+              id="repeatPassword"
+              [(ngModel)]="user.repeatPassword"
+              name="repeatPassword"
+              class="form-control"
+              required
+              placeholder="Repite tu contraseña"
+            />
+          </div>
+
           <div class="d-flex justify-content-between align-items-center">
             <button type="submit" class="btn btn-primary">Registrar</button>
             <a (click)="goToLogin()" class="btn btn-link">¿Ya tienes cuenta? Inicia sesión</a>

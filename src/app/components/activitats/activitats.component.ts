@@ -72,7 +72,7 @@ export class ActivitatsComponent implements OnInit, AfterViewInit {
       // Agregar marcador para el hotel (azul y con nombre)
       this.addMarker({ lat: this.latHotel, lng: this.lngHotel }, this.hotelName, 'hotel');
     } else {
-      console.error('No se encontró el contenedor del mapa con id "map".');
+      console.error();
     }
   }
 

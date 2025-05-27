@@ -130,12 +130,12 @@ export class HotelDetailComponent implements OnInit {
             console.log('Habitacions disponibles actualitzades');
           },
           error: (err) => {
-            console.error('Error al actualitzar les habitacions disponibles:', err);
+            console.error();
           }
         });
       },
       error: (err) => {
-        console.error('Error al confirmar la reserva:', err);
+        console.error();
         this.logica.showSnackBar('Hi ha hagut un problema al realitzar la reserva', 'error');
       }
     });

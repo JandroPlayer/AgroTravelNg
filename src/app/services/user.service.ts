@@ -12,6 +12,7 @@ export interface UserResponse {
   createdAt: string;
   img: string;
   saldo: string;
+  isAdmin: boolean;
 }
 
 @Injectable({
@@ -38,6 +39,10 @@ export class UserService {
     return currentUser ? JSON.parse(currentUser) : null;
   }
 
+  getAllUsers(): Observable<UserResponse[]> {
+    return this.http.get<UserResponse[]>(`${this.apiUrl}/`);
+  }
+
   setUser(user: any): void {
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
@@ -53,6 +58,10 @@ export class UserService {
 
   updateUser(id: string, userData: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, userData);
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 
   payForUser(userId: number, amount: number): Observable<any> {

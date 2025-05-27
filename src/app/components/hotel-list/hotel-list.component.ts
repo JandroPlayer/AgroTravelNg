@@ -48,7 +48,7 @@ export class HotelListComponent implements OnInit {
       this.hotels = data;
       this.aplicarFiltros();
     }, error => {
-      console.error('Error al obtener hoteles:', error);
+      console.error();
     });
 
     // Obtener los favoritos del usuario
@@ -56,7 +56,7 @@ export class HotelListComponent implements OnInit {
       this.userService.getFavoritos(this.currentUserId).subscribe(favoritos => {
         this.favoritos = favoritos;
       }, error => {
-        console.error('Error al obtener los favoritos:', error);
+        console.error();
       });
     }
   }

@@ -121,4 +121,10 @@ export class Logica {
       }
     });
   }
+
+  confirmAndExecute(message: string, action: () => void): void {
+    if (confirm(message)) {
+      action();
+    }
+  }
 }

@@ -7,3 +7,12 @@
 .navbar-brand {
   margin-left: 16px;
 }
+
+.admin-label {
+  background-color: orange;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-right: 0.5rem;
+}

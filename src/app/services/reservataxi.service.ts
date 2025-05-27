@@ -52,7 +52,7 @@ export class ReservaTaxiService implements ReservaService {
   }
 
   // Obtener todas las reservas de taxi
-  getReservas(): Observable<ReservaTaxi[]> {
+  getReservasTaxi(): Observable<ReservaTaxi[]> {
     return this.http.get<ReservaTaxi[]>(this.apiUrl);
   }
 
@@ -64,6 +64,10 @@ export class ReservaTaxiService implements ReservaService {
   // Obtener reservas por usuario
   getReservasTaxiByUser(userId: string): Observable<ReservaTaxi[]> {
     return this.http.get<ReservaTaxi[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
+  updateReservaTaxi(id: number, reserva: ReservaTaxi): Observable<ReservaTaxi> {
+    return this.http.put<ReservaTaxi>(`${this.apiUrl}/${id}`, reserva);
   }
 
   // Marcar reserva como pagada

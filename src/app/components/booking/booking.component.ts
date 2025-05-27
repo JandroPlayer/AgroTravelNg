@@ -53,7 +53,7 @@ export class BookingComponent implements OnInit {
         next: (data) => {
           this.hotel = data;
         },
-        error: (error) => console.error('Error cargando el hotel:', error)
+        error: (error) => console.error()
       });
     }
   }
@@ -91,7 +91,7 @@ export class BookingComponent implements OnInit {
         alert('Reserva confirmada con éxito!');
       },
       error: (err) => {
-        console.error('Error al confirmar la reserva:', err);
+        console.error();
         alert('Hubo un problema al realizar la reserva');
       }
     });

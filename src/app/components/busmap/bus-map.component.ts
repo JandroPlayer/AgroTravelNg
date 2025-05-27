@@ -84,7 +84,7 @@ export class BusMapComponent implements OnInit, AfterViewInit {
             directionsRenderer.setMap(this.map);
             directionsRenderer.setDirections(result);
           } else {
-            console.error(`Ruta fallida para hotel ${hotel.name}: ${status}`);
+            console.error();
           }
         });
       });

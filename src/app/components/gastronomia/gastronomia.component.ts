@@ -25,7 +25,7 @@ export class GastronomiaComponent implements OnInit {
         this.carregant = false;
       },
       error: (err) => {
-        console.error('Error carregant plats típics:', err);
+        console.error();
         this.carregant = false;
       }
     });

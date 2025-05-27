@@ -98,7 +98,7 @@ export class ReservaAutobusComponent implements OnInit {
           this.logica.showSnackBar('Reserva realizada con éxito!', 'success');
         },
         (error) => {
-          console.error('Error en la reserva', error);
+          console.error();
           this.logica.showSnackBar('Error al realizar la reserva.', 'error');
         }
       );

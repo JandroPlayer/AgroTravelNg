@@ -16,6 +16,8 @@ import {FavoritosComponent} from './components/favoritos/favoritos.component';
 import {GastronomiaComponent} from './components/gastronomia/gastronomia.component';
 import {NoticiesComponent} from './components/noticies/noticies.component';
 import {ReservaTaxiComponent} from './components/reserva-taxi/reservataxi.component';
+import {AdminUsersComponent} from './components/admin-users/admin-users.component';
+import {AdminReservesComponent} from './components/admin-reserves/admin-reserves.component';
 
 export const routes: Routes = [
   { path: 'hotels', component: HotelListComponent },
@@ -33,6 +35,8 @@ export const routes: Routes = [
   { path: 'activitats', component: ActivitatsComponent },
   { path: 'gastronomia', component: GastronomiaComponent },
   { path: 'noticias', component: NoticiesComponent },
+  { path: 'admin/users', component: AdminUsersComponent },
+  { path: 'admin/reserves', component: AdminReservesComponent },
   // Rutas Dropdown
   { path: 'users/:id/favoritos', component: FavoritosComponent },
   {

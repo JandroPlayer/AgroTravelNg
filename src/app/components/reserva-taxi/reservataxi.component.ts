@@ -73,7 +73,7 @@ export class ReservaTaxiComponent implements OnInit, AfterViewInit {
           if (this.mapContainer) {
             this.inicialitzarMapa();
           } else {
-            console.error('Map container aún no disponible tras cargar taxi');
+            console.error();
           }
         }, 0);
       }
@@ -182,7 +182,7 @@ export class ReservaTaxiComponent implements OnInit, AfterViewInit {
         this.preuTotal = +(taxi.tarifaBase + taxi.costPerKm * this.distanciaKm).toFixed(2);
         this.reservaForm.get('preuEstimat')?.setValue(this.preuTotal);
       } else {
-        console.error('Error en calcular ruta:', status);
+        console.error();
       }
     });
   }
@@ -226,7 +226,7 @@ export class ReservaTaxiComponent implements OnInit, AfterViewInit {
           this.logica.showSnackBar('Reserva de taxi realitzada amb èxit!', 'success');
         },
         error: (error) => {
-          console.error('Error en la reserva', error);
+          console.error();
           this.logica.showSnackBar('Error al fer la reserva de taxi.', 'error');
         }
       });

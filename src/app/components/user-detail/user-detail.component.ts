@@ -39,7 +39,7 @@ export class UserDetailComponent implements OnInit {
   getUserDetails(): void {
     this.userService.getUserById(this.userId).subscribe({
       next: (res) => this.user = res,
-      error: (err) => console.error('Error cargando usuario', err)
+      error: (err) => console.error()
     });
   }
 

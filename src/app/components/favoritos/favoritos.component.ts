@@ -36,7 +36,7 @@ export class FavoritosComponent implements OnInit {
           this.favoritos = data;
         },
         (error) => {
-          console.error('Error al obtener los favoritos', error);
+          console.error();
         }
       );
     } else {

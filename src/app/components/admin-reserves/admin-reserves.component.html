@@ -1,0 +1,244 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h2 class="mb-3 text-center">Totes les reserves d'Hotels</h2>
+
+  <div *ngIf="bookings.length === 0" class="alert alert-warning text-center">
+    <p>No hi ha reserves registrades.</p>
+  </div>
+
+  <table *ngIf="bookings.length > 0" class="table table-striped table-bordered">
+    <thead class="table-success">
+    <tr>
+      <th>ID</th>
+      <th>UserID</th>
+      <th>Hotel</th>
+      <th>Data d'entrada</th>
+      <th>Data de sortida</th>
+      <th>Adults</th>
+      <th>Nens</th>
+      <th>Habitacions</th>
+      <th>Preu</th>
+      <th>Accions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let booking of bookings">
+      <td>{{ booking.id }}</td>
+      <td>{{ booking.user?.id }}</td>
+      <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        {{ booking.hotel.name }}
+      </td>
+      <td>
+        <input
+          type="date"
+          [ngModel]="formatToISODate(booking.startDate)"
+          (ngModelChange)="onDateChange($event, booking, 'startDate')"
+          [ngModelOptions]="{standalone: true}"
+        />
+      </td>
+      <td>
+        <input
+          type="date"
+          [ngModel]="formatToISODate(booking.endDate)"
+          (ngModelChange)="onDateChange($event, booking, 'endDate')"
+          [ngModelOptions]="{standalone: true}"
+        />
+      </td>
+
+      <td>
+        <input
+          type="number"
+          min="0"
+          [(ngModel)]="booking.adults"
+          (ngModelChange)="calcularTotalReserva(booking)"
+          [ngModelOptions]="{standalone: true}"
+          class="input-sm"
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          min="0"
+          [(ngModel)]="booking.children"
+          (ngModelChange)="calcularTotalReserva(booking)"
+          [ngModelOptions]="{standalone: true}"
+          class="input-sm"
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          min="1"
+          [(ngModel)]="booking.rooms"
+          (ngModelChange)="calcularTotalReserva(booking)"
+          [ngModelOptions]="{standalone: true}"
+          class="input-sm"
+        />
+      </td>
+
+      <td>{{ booking.preu | currency:'EUR' }}</td>
+      <td>
+        <button
+          class="btn btn-primary btn-sm btn-success me-2"
+          (click)="modificarReservaHotel(booking)"
+        >
+          Guardar
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          [disabled]="booking.eliminant"
+          (click)="eliminarReservaHotel(booking)"
+        >
+          {{ booking.eliminant ? 'Eliminant...' : 'Eliminar' }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Autobusos y Taxis con edición inline -->
+
+<div class="container mt-4">
+  <h2 class="mb-3 text-center">Totes les reserves de Autobusos</h2>
+
+  <div *ngIf="busBookings.length === 0" class="alert alert-warning text-center">
+    <p>No hi ha reserves de bus registrades.</p>
+  </div>
+
+  <table *ngIf="busBookings.length > 0" class="table table-striped table-bordered">
+    <thead class="table-warning">
+    <tr>
+      <th>ID</th>
+      <th>UserID</th>
+      <th>Bus</th>
+      <th>Data i hora</th>
+      <th>Núm. passatgers</th>
+      <th>Preu</th>
+      <th>Accions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let booking of busBookings">
+      <td>{{ booking.id }}</td>
+      <td>{{ booking.user?.id }}</td>
+      <td>{{ booking.autobus.marca }} {{ booking.autobus.model }}</td>
+      <td>
+        <input
+          type="datetime-local"
+          [ngModel]="formatToISODateTime(booking.dataHora)"
+          (ngModelChange)="onDateChange($event, booking, 'dataHora')"
+          [ngModelOptions]="{standalone: true}"
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          min="1"
+          [(ngModel)]="booking.num_passatgers"
+          (ngModelChange)="calcularTotalReserva(booking)"
+          [ngModelOptions]="{standalone: true}"
+        />
+      </td>
+      <td>{{ booking.preu | currency:'EUR' }}</td>
+      <td>
+        <button
+          class="btn btn-primary btn-sm btn-success me-2"
+          (click)="modificarReservaAutobus(booking)"
+        >
+          Guardar
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          [disabled]="booking.cancelant"
+          (click)="eliminarReservaAutobus(booking)"
+        >
+          {{ booking.eliminant ? 'Eliminant...' : 'Eliminar' }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="container mt-4">
+  <h2 class="mb-3 text-center">Totes les reserves de Taxis</h2>
+
+  <div *ngIf="taxiBookings.length === 0" class="alert alert-warning text-center">
+    <p>No hi ha reserves de taxi registrades.</p>
+  </div>
+
+  <table *ngIf="taxiBookings.length > 0" class="table table-striped table-bordered">
+    <thead class="table-info">
+    <tr>
+      <th>ID</th>
+      <th>UserID</th>
+      <th>Taxi</th>
+      <th>Data i hora</th>
+      <th>Origen</th>
+      <th>Destí</th>
+      <th>Distància (km)</th>
+      <th>Preu</th>
+      <th>Accions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let booking of taxiBookings">
+      <td>{{ booking.id }}</td>
+      <td>{{ booking.user?.id }}</td>
+      <td>{{ booking.taxi.marca }} {{ booking.taxi.model }}</td>
+      <td>
+        <input
+          type="datetime-local"
+          [ngModel]="formatToISODateTime(booking.dataHora)"
+          (ngModelChange)="onDateChange($event, booking, 'dataHora')"
+          [ngModelOptions]="{standalone: true}"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          [(ngModel)]="booking.origen"
+          (ngModelChange)="calcularTotalReserva(booking)"
+          [ngModelOptions]="{standalone: true}"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          [(ngModel)]="booking.desti"
+          (ngModelChange)="calcularTotalReserva(booking)"
+          [ngModelOptions]="{standalone: true}"
+        />
+      </td>
+      <td>
+        <input
+          type="number"
+          min="0"
+          [(ngModel)]="booking.distanciaKm"
+          (ngModelChange)="calcularTotalReserva(booking)"
+          [ngModelOptions]="{standalone: true}"
+        />
+      </td>
+      <td>{{ booking.preu | currency:'EUR' }}</td>
+      <td>
+        <button
+          class="btn btn-primary btn-sm btn-success me-2"
+          (click)="modificarReservaTaxi(booking)"
+        >
+          Guardar
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          [disabled]="booking.cancelant"
+          (click)="eliminarReservaTaxi(booking)"
+        >
+          {{ booking.eliminant ? 'Eliminant...' : 'Eliminar' }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

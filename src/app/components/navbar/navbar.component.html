@@ -31,9 +31,16 @@
         <li class="nav-item dropdown" *ngIf="user?.id">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
              data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menú de usuario">
+
+            <!-- Admin a la izquierda -->
+            <span *ngIf="user?.isadmin" class="admin-label px-2 py-1 rounded">
+              Admin
+            </span>
+
             <img class="rounded-circle border border-light" width="40" height="40"
                  [src]="user?.img || 'https://ui-avatars.com/api/?name=' + user?.name" alt="{{ user?.name || 'Avatar' }}"
                  style="object-fit: cover;" />
+
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
             <li>
@@ -45,6 +52,15 @@
             <li>
               <a class="dropdown-item" [routerLink]="['/users', user?.id, 'favoritos']">Favorits</a>
             </li>
+
+            <!-- NOMÉS ADMIN -->
+            <li *ngIf="user?.isadmin">
+              <a class="dropdown-item" [routerLink]="['/admin/users']">Gestionar Usuaris</a>
+            </li>
+            <li *ngIf="user?.isadmin">
+              <a class="dropdown-item" [routerLink]="['/admin/reserves']">Gestionar Reserves</a>
+            </li>
+
             <li><hr class="dropdown-divider" /></li>
             <li>
               <a class="dropdown-item" (click)="logout()">Cerrar sesión</a>

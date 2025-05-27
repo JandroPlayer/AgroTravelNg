@@ -10,6 +10,9 @@ interface ReservaService {
 export interface Booking {
   id: string;  // Agregar el campo 'id'
   hotel: { id: number };
+  user: {
+    id: number;
+  };
   startDate: Date;
   endDate: Date;
   adults: number;
@@ -36,12 +39,16 @@ export class BookingService implements ReservaService {
     return this.http.post<Booking>(this.apiUrl, booking);
   }
 
-  getBookings(): Observable<Booking[]> {
+  getReservasHotel(): Observable<Booking[]> {
     return this.http.get<Booking[]>(this.apiUrl);
   }
 
   getBookingsByHotel(hotelId: string): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.apiUrl}/hotel/${hotelId}`);
+  }
+
+  updateReservaHotel(id: string, reserva: Booking): Observable<Booking> {
+    return this.http.put<Booking>(`${this.apiUrl}/${id}`, reserva);
   }
 
   getBookingsByUser(userId: string): Observable<Booking[]> {

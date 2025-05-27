@@ -46,7 +46,7 @@ export class ReservaAutobusService implements ReservaService {
 
 
   // Obtener todas las reservas
-  getReservas(): Observable<ReservaAutobus[]> {
+  getReservasAutobus(): Observable<ReservaAutobus[]> {
     return this.http.get<ReservaAutobus[]>(this.apiUrl);
   }
 
@@ -58,6 +58,10 @@ export class ReservaAutobusService implements ReservaService {
   // Obtener reservas por usuario
   getReservasAutobusByUser(userId: string): Observable<ReservaAutobus[]> {
     return this.http.get<ReservaAutobus[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
+  updateReservaAutobus(id: number, reserva: ReservaAutobus): Observable<ReservaAutobus> {
+    return this.http.put<ReservaAutobus>(`${this.apiUrl}/${id}`, reserva);
   }
 
   // reserva.service.ts

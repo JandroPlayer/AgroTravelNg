@@ -39,7 +39,7 @@ export class TaxisComponent implements OnInit {
       error: (err) => {
         this.error = 'Error al cargar los taxis.';
         this.loading = false;
-        console.error(err);
+        console.error();
       }
     });
   }

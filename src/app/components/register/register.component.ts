@@ -16,7 +16,7 @@ import {Logica} from '../../logica/logica';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  user: any = { name: '', email: '', password: '', img: '' };
+  user: any = { name: '', email: '', password: '', repeatPassword: '', img: '' };
   selectedFile: File | null = null;
   message = '';
 
@@ -38,8 +38,13 @@ export class RegisterComponent {
   }
 
   async register() {
-    if (!this.user.name || !this.user.email || !this.user.password) {
+    if (!this.user.name || !this.user.email || !this.user.password || !this.user.repeatPassword) {
       this.logica.showSnackBar('Por favor, completa todos los campos.', "error");
+      return;
+    }
+
+    if (this.user.password !== this.user.repeatPassword) {
+      this.logica.showSnackBar('Las contraseñas no coinciden.', "error");
       return;
     }
 
@@ -82,13 +87,13 @@ export class RegisterComponent {
           }
         },
         error: (err: any) => {
-          console.error('❌ Error recibido del backend:', err);
+          console.error();
           this.message = err.error?.message || err.error || 'Ocurrió un error inesperado';
           this.logica.showSnackBar(this.message, "error");
         }
       });
     } catch (uploadError) {
-      console.error('❌ Error en el proceso de subida de imagen:', uploadError);
+      console.error();
       this.logica.showSnackBar('Error al subir la imagen de perfil.', "error");
     }
   }
@@ -119,7 +124,7 @@ export class RegisterComponent {
       }
 
     } catch (err) {
-      console.error('Error al subir la imagen de perfil:', err);
+      console.error();
       throw new Error('Error al subir la imagen de perfil');
     }
   }
