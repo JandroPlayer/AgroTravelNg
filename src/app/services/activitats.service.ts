@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
+import { environment } from './environments/environment';
 
 export interface Activitat {
   id: number;
@@ -16,7 +17,7 @@ export interface Activitat {
   providedIn: 'root'
 })
 export class ActivitatsService {
-  private apiUrl = '${environment.apiUrl}/activitats'; // URL base
+  private apiUrl = `${environment.apiUrl}/activitats`; // URL base
 
   constructor(private http: HttpClient) {}
 

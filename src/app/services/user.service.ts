@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Hotel} from './hotel.service';
+import {environment} from './environments/environment';
 
 // Interfície per a la resposta de login
 export interface UserResponse {
@@ -19,7 +20,7 @@ export interface UserResponse {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = '${environment.apiUrl}/users';
+  private apiUrl = `${environment.apiUrl}/users`;
   private currentUser: any;
 
   constructor(private http: HttpClient) {}

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
+import {environment} from './environments/environment';
 
 interface ReservaService {
   pagarReserva(id: number): Observable<any>;
@@ -23,7 +24,7 @@ export interface ReservaTaxi {
 })
 export class ReservaTaxiService implements ReservaService {
 
-  private apiUrl = '${environment.apiUrl}/reservas-taxis';
+  private apiUrl = `${environment.apiUrl}/reservas-taxis`;
 
   constructor(private http: HttpClient) {}
 

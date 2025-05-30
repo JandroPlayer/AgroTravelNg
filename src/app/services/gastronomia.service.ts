@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {environment} from './environments/environment';
 
 export interface PlatTipic {
   id?: number;
@@ -11,7 +12,7 @@ export interface PlatTipic {
 
 @Injectable({ providedIn: 'root' })
 export class GastronomiaService {
-  private baseUrl = '${environment.apiUrl}/plats';
+  private baseUrl = `${environment.apiUrl}/plats`;
 
   constructor(private http: HttpClient) {}
 

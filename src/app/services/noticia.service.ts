@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {environment} from './environments/environment';
 
 export interface ApiResponse {
   status: string;
@@ -19,7 +20,7 @@ export interface Noticia {
 
 @Injectable({ providedIn: 'root' })
 export class NoticiesService {
-  private baseUrl = '${environment.apiUrl}/noticies';
+  private baseUrl = `${environment.apiUrl}/noticies`;
 
   constructor(private http: HttpClient) {}
 
