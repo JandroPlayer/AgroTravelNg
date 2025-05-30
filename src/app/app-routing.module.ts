@@ -18,31 +18,30 @@ import {NoticiesComponent} from './components/noticies/noticies.component';
 import {ReservaTaxiComponent} from './components/reserva-taxi/reservataxi.component';
 import {AdminUsersComponent} from './components/admin-users/admin-users.component';
 import {AdminReservesComponent} from './components/admin-reserves/admin-reserves.component';
+import {AuthGuard} from './services/auth.guard';
 
 export const routes: Routes = [
-  { path: 'hotels', component: HotelListComponent },
-  { path: 'hotel/:id', component: HotelDetailComponent },
-  { path: 'users/:id', component: UserDetailComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'reserva', component: BookingComponent },
-  { path: 'reserva/:id', component: BookingComponent },
-  { path: 'reservautobus/:id', component: ReservaAutobusComponent },
-  { path: 'reservataxi/:id', component: ReservaTaxiComponent },
-  { path: 'autobuses', component: AutobusesComponent },
-  { path: 'taxis', component: TaxisComponent },
-  { path: 'busmap', component: BusMapComponent },
-  { path: 'activitats', component: ActivitatsComponent },
-  { path: 'gastronomia', component: GastronomiaComponent },
-  { path: 'noticias', component: NoticiesComponent },
-  { path: 'admin/users', component: AdminUsersComponent },
-  { path: 'admin/reserves', component: AdminReservesComponent },
-  // Rutas Dropdown
-  { path: 'users/:id/favoritos', component: FavoritosComponent },
-  {
-    path: 'users/:id/bookings',
-    component: BookingListComponent
-  },
+  { path: 'hotels', component: HotelListComponent, canActivate: [AuthGuard] },
+  { path: 'hotel/:id', component: HotelDetailComponent, canActivate: [AuthGuard] },
+  { path: 'users/:id', component: UserDetailComponent, canActivate: [AuthGuard] },
+  { path: 'reserva', component: BookingComponent, canActivate: [AuthGuard] },
+  { path: 'reserva/:id', component: BookingComponent, canActivate: [AuthGuard] },
+  { path: 'reservautobus/:id', component: ReservaAutobusComponent, canActivate: [AuthGuard] },
+  { path: 'reservataxi/:id', component: ReservaTaxiComponent, canActivate: [AuthGuard] },
+  { path: 'autobuses', component: AutobusesComponent, canActivate: [AuthGuard] },
+  { path: 'taxis', component: TaxisComponent, canActivate: [AuthGuard] },
+  { path: 'busmap', component: BusMapComponent, canActivate: [AuthGuard] },
+  { path: 'activitats', component: ActivitatsComponent, canActivate: [AuthGuard] },
+  { path: 'gastronomia', component: GastronomiaComponent, canActivate: [AuthGuard] },
+  { path: 'noticias', component: NoticiesComponent, canActivate: [AuthGuard] },
+  { path: 'admin/users', component: AdminUsersComponent, canActivate: [AuthGuard] },
+  { path: 'admin/reserves', component: AdminReservesComponent, canActivate: [AuthGuard] },
+  // Rutas dropdown
+  { path: 'users/:id/favoritos', component: FavoritosComponent, canActivate: [AuthGuard] },
+  { path: 'users/:id/bookings', component: BookingListComponent, canActivate: [AuthGuard] },
+
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

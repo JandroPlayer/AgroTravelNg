@@ -52,6 +52,10 @@ export class UserService {
     localStorage.removeItem('currentUser');
   }
 
+  isLoggedIn(): boolean {
+    return !!this.getUser();
+  }
+
   // Consultes i modificacions remotes
   getUserById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
