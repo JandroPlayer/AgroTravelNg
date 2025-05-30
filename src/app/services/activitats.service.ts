@@ -16,7 +16,7 @@ export interface Activitat {
   providedIn: 'root'
 })
 export class ActivitatsService {
-  private apiUrl = 'http://localhost:8080/api/activitats'; // URL base
+  private apiUrl = '${environment.apiUrl}/activitats'; // URL base
 
   constructor(private http: HttpClient) {}
 

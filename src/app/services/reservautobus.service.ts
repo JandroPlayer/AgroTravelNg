@@ -21,7 +21,7 @@ export interface ReservaAutobus {
   providedIn: 'root'
 })
 export class ReservaAutobusService implements ReservaService {
-  private apiUrl = 'http://localhost:8080/api/reservas-autobus';
+  private apiUrl = '${environment.apiUrl}/reservas-autobus';
 
   constructor(private http: HttpClient) {}
 

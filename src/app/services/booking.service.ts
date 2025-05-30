@@ -24,7 +24,7 @@ export interface Booking {
   providedIn: 'root'
 })
 export class BookingService implements ReservaService {
-  private apiUrl = 'http://localhost:8080/api/reservas';
+  private apiUrl = '${environment.apiUrl}/reservas';
 
   constructor(private http: HttpClient) {}
 

@@ -11,7 +11,7 @@ export interface PlatTipic {
 
 @Injectable({ providedIn: 'root' })
 export class GastronomiaService {
-  private baseUrl = 'http://localhost:8080/api/plats';
+  private baseUrl = '${environment.apiUrl}/plats';
 
   constructor(private http: HttpClient) {}
 

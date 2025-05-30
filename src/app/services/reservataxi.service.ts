@@ -23,7 +23,7 @@ export interface ReservaTaxi {
 })
 export class ReservaTaxiService implements ReservaService {
 
-  private apiUrl = 'http://localhost:8080/api/reservas-taxis';
+  private apiUrl = '${environment.apiUrl}/reservas-taxis';
 
   constructor(private http: HttpClient) {}
 

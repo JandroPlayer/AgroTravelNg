@@ -26,7 +26,7 @@ export interface Taxi extends VehicleElectric {
   providedIn: 'root'
 })
 export class VehiclesElectricsService {
-  private baseUrl = 'http://localhost:8080/api/vehicles';
+  private baseUrl = '${environment.apiUrl}/vehicles';
 
   constructor(private http: HttpClient) {}
 

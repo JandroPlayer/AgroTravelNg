@@ -19,7 +19,7 @@ export interface Noticia {
 
 @Injectable({ providedIn: 'root' })
 export class NoticiesService {
-  private baseUrl = 'http://localhost:8080/api/noticies';
+  private baseUrl = '${environment.apiUrl}/noticies';
 
   constructor(private http: HttpClient) {}
 
