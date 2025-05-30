@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {firstValueFrom} from 'rxjs';
 import {Logica} from '../../logica/logica';
+import {CloudinaryService} from '../../services/cloudinary.service';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class RegisterComponent {
     private userService: UserService,
     private router: Router,
     private http: HttpClient,
-    private logica: Logica
+    private logica: Logica,
+    private cloudinaryService: CloudinaryService,
   ) {}
 
   onFileSelected(event: any) {
@@ -129,11 +131,8 @@ export class RegisterComponent {
     }
   }
 
-
   async getCloudinarySignature(): Promise<any> {
-    return await firstValueFrom(
-      this.http.get('http://localhost:3000/api/cloudinary-signature')
-    );
+    return await firstValueFrom(this.cloudinaryService.getCloudinarySignature());
   }
 
   goToLogin() {

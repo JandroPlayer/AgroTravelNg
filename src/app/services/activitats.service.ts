@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
-import {environment} from './environments/enviroment.prod';
+import {environment} from './environments/environment.prod';
 
 export interface Activitat {
   id: number;
