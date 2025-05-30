@@ -7,7 +7,6 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { forkJoin } from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {Logica} from '../../logica/logica';
-import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-admin-reserves',

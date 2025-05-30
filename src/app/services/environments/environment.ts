@@ -1,4 +1,5 @@
+// en environment.prod.ts
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:8080/api' // Cambia la URL según tu backend
+  production: true,
+  apiUrl: 'https://backend-production-0e3a.up.railway.app/api'
 };

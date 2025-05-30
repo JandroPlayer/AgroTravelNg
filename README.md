@@ -1,16 +1,21 @@
-# HotelConnectNg
+# HotelConnectNg – Frontend de AgroTravel
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+Aquest projecte és el frontend del sistema **AgroTravel**, una plataforma per a la promoció i reserva d'experiències d'agroturisme a Mallorca. Ha estat desenvolupat amb [Angular CLI](https://github.com/angular/angular-cli) versió 19.2.5.
 
-## Development server
+## 🧩 Estructura principal
 
-To start a local development server, run:
+- `components/`: components reutilitzables (targetes, filtres, llistats)
+- `services/`: serveis HTTP per comunicar-se amb l’API REST del backend
+- `logica/`: classes amb mètodes comuns que s'utilitzen als components
+
+## 🚀 Servidor de desenvolupament
+
+Per iniciar el servidor de desenvolupament, executa:
 
 ```bash
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Després, obre http://localhost:4200/ en el navegador. L’aplicació es recarrega automàticament en detectar canvis als fitxers font.
 
 ## Code scaffolding
 
@@ -57,3 +62,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+## Dependències destacades
+@angular/google-maps: integració amb Google Maps
