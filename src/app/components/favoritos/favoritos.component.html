@@ -11,15 +11,21 @@
     <div *ngFor="let hotel of favoritos" class="col-md-4 mb-4">
       <div class="card h-100 shadow-sm">
 
-        <img class="card-img-top" [src]="hotel.imageUrl" [alt]="hotel.name" style="height: 200px; object-fit: cover;">
+        <!-- Imatge amb enllaç -->
+        <a [routerLink]="['/hotel', hotel.id]">
+          <img class="card-img-top" [src]="hotel.imageUrl" [alt]="hotel.name" style="height: 200px; object-fit: cover;">
+        </a>
 
         <div class="card-body d-flex flex-column justify-content-between">
 
-          <h5 class="card-title text-center">{{ hotel.name }}</h5>
+          <!-- Nom amb enllaç -->
+          <a [routerLink]="['/hotel', hotel.id]" class="text-decoration-none text-dark">
+            <h5 class="card-title text-center">{{ hotel.name }}</h5>
+          </a>
 
           <div class="d-flex justify-content-between mt-3">
             <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary btn-sm">
-              👁️ Veure detalls
+              📅 Reservar
             </a>
 
             <button (click)="removeFavorite(hotel.id)" class="btn btn-outline-danger btn-sm">
