@@ -8,18 +8,23 @@
       <div *ngIf="autobusos.length > 0; else carregant">
         <div class="card mb-4 rounded-4 shadow-sm" *ngFor="let bus of autobusos">
           <div class="row g-0 align-items-center">
+
             <!-- Columna imatge -->
             <div class="col-md-4 d-flex justify-content-center align-items-center p-3">
-              <img [src]="bus.imageUrl"
-                   alt="Imagen del autobús"
-                   class="img-fluid rounded-4 shadow-sm"
-                   style="max-height: 150px; object-fit: contain;">
+              <a [routerLink]="['/reservautobus', bus.id]" style="text-decoration: none;">
+                <img [src]="bus.imageUrl"
+                     alt="Imagen del autobús"
+                     class="img-fluid rounded-4 shadow-sm"
+                     style="max-height: 150px; object-fit: contain;">
+              </a>
             </div>
 
             <!-- Columna contingut -->
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">{{ bus.marca }} {{ bus.model }}</h5>
+                <a [routerLink]="['/reservautobus', bus.id]" style="text-decoration: none; color: inherit;">
+                  <h5 class="card-title">{{ bus.marca }} {{ bus.model }}</h5>
+                </a>
                 <p class="card-text">
                   <strong>Any:</strong> {{ bus.anyFabricacio }}<br>
                   <strong>Autonomia:</strong> {{ bus.autonomiaKm }} km<br>
@@ -31,6 +36,7 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>

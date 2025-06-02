@@ -8,18 +8,23 @@
       <div *ngIf="taxis.length > 0; else carregant">
         <div class="card mb-4 rounded-4 shadow-sm" *ngFor="let taxi of taxis">
           <div class="row g-0 align-items-center">
+
             <!-- Columna imatge -->
             <div class="col-md-4 d-flex justify-content-center align-items-center p-3">
-              <img [src]="taxi.imageUrl"
-                   alt="Imatge del taxi"
-                   class="img-fluid rounded-4 shadow-sm"
-                   style="max-height: 150px; object-fit: contain;">
+              <a [routerLink]="['/reservataxi', taxi.id]" style="text-decoration: none;">
+                <img [src]="taxi.imageUrl"
+                     alt="Imatge del taxi"
+                     class="img-fluid rounded-4 shadow-sm"
+                     style="max-height: 150px; object-fit: contain;">
+              </a>
             </div>
 
             <!-- Columna contingut -->
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">{{ taxi.marca }} {{ taxi.model }}</h5>
+                <a [routerLink]="['/reservataxi', taxi.id]" style="text-decoration: none; color: inherit;">
+                  <h5 class="card-title">{{ taxi.marca }} {{ taxi.model }}</h5>
+                </a>
                 <p class="card-text">
                   <strong>Any:</strong> {{ taxi.anyFabricacio }}<br>
                   <strong>Autonomia:</strong> {{ taxi.autonomiaKm }} km<br>
@@ -27,12 +32,12 @@
                   <strong>Tarifa base:</strong> {{ taxi.tarifaBase | currency:'EUR':'symbol':'1.2-2' }}<br>
                   <strong>Cost per km:</strong> {{ taxi.costPerKm | currency:'EUR':'symbol':'1.2-2' }}
                 </p>
-                <!-- Aquí pots afegir botons o altres controls si vols -->
                 <div class="d-flex justify-content-between mt-3">
                   <a [routerLink]="['/reservataxi', taxi.id]" class="btn btn-primary btn-sm">📅 Reservar</a>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>

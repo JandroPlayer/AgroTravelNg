@@ -25,11 +25,20 @@
   <div class="row" *ngIf="!carregant">
     <div class="col-md-4 mb-4" *ngFor="let noticia of noticiesPaginades">
       <div class="card h-100 shadow-sm">
-        <img *ngIf="noticia.urlToImage" [src]="noticia.urlToImage" class="card-img-top" alt="Imatge notícia">
+
+        <!-- Imatge enllaçada -->
+        <a [href]="noticia.url" target="_blank">
+          <img *ngIf="noticia.urlToImage" [src]="noticia.urlToImage" class="card-img-top" alt="Imatge notícia">
+        </a>
+
         <div class="card-body">
-          <h5 class="card-title">{{ noticia.title }}</h5>
+          <!-- Títol enllaçat -->
+          <a [href]="noticia.url" target="_blank" style="text-decoration: none; color: inherit;">
+            <h5 class="card-title">{{ noticia.title }}</h5>
+          </a>
           <p class="card-text">{{ noticia.description }}</p>
         </div>
+
         <div class="card-footer text-end">
           <a [href]="noticia.url" target="_blank" class="btn btn-outline-primary btn-sm">Llegir més</a>
         </div>
