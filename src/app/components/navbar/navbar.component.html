@@ -1,10 +1,11 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #28a745;">
-    <a class="navbar-brand d-flex align-items-center" href="#">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
       <img src="https://res.cloudinary.com/dglxd4bqz/image/upload/v1746523107/logo3_fsaokn.png"
            alt="Logo AgroTravel" height="60" class="me-2" />
       <span class="fs-4">AgroTravel Mallorca</span>
     </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -28,7 +29,8 @@
           <a class="nav-link" href="/noticias">Notícies</a>
         </li>
 
-        <li class="nav-item dropdown" *ngIf="user?.id">
+        <!-- 🔐 Si està loguejat -->
+        <li class="nav-item dropdown" *ngIf="user?.id; else loginBlock">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
              data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menú de usuario">
 
@@ -38,22 +40,15 @@
             </span>
 
             <img class="rounded-circle border border-light" width="40" height="40"
-                 [src]="user?.img || 'https://ui-avatars.com/api/?name=' + user?.name" alt="{{ user?.name || 'Avatar' }}"
-                 style="object-fit: cover;" />
-
+                 [src]="user?.img || 'https://ui-avatars.com/api/?name=' + user?.name"
+                 alt="{{ user?.name || 'Avatar' }}" style="object-fit: cover;" />
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li>
-              <a class="dropdown-item" [routerLink]="['/users', user?.id]">Perfil</a>
-            </li>
-            <li>
-              <a class="dropdown-item" [routerLink]="['/users', user?.id, 'bookings']">Reserves</a>
-            </li>
-            <li>
-              <a class="dropdown-item" [routerLink]="['/users', user?.id, 'favoritos']">Favorits</a>
-            </li>
 
-            <!-- NOMÉS ADMIN -->
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" [routerLink]="['/users', user?.id]">Perfil</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/users', user?.id, 'bookings']">Reserves</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/users', user?.id, 'favoritos']">Favorits</a></li>
+
             <li *ngIf="user?.isadmin">
               <a class="dropdown-item" [routerLink]="['/admin/users']">Gestionar Usuaris</a>
             </li>
@@ -62,11 +57,21 @@
             </li>
 
             <li><hr class="dropdown-divider" /></li>
-            <li>
-              <a class="dropdown-item" (click)="logout()">Cerrar sesión</a>
-            </li>
+            <li><a class="dropdown-item" (click)="logout()">Cerrar sessió</a></li>
           </ul>
         </li>
+
+        <!-- 🔓 Si NO està loguejat -->
+        <ng-template #loginBlock>
+          <li class="nav-item d-flex align-items-center">
+            <a class="nav-link d-flex align-items-center" routerLink="/login">
+              <span class="me-2">Iniciar sessió</span>
+              <img class="rounded-circle border border-light" width="40" height="40"
+                   src="https://ui-avatars.com/api/?name=Invitat"
+                   alt="Avatar per defecte" style="object-fit: cover;" />
+            </a>
+          </li>
+        </ng-template>
       </ul>
     </div>
   </nav>

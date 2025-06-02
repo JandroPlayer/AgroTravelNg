@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BookingService} from '../../services/booking.service';
 import { ReservaAutobusService } from '../../services/reservautobus.service';
-import { ReservaTaxiService } from '../../services/reservataxi.service';
+import {ReservaTaxi, ReservaTaxiService} from '../../services/reservataxi.service';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { forkJoin } from 'rxjs';
@@ -220,6 +220,44 @@ export class AdminReservesComponent implements OnInit {
     const minutes = date.getMinutes().toString().padStart(2, '0');
 
     return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+  // Mètode para actualizar distancia cuando cambien origen o destino (string "lat,lng")
+  actualitzarDistanciaAmbCoordenades(booking: ReservaTaxi): void {
+    if (!booking.origen || !booking.desti || !booking.taxi) return;
+
+    const origenParts = booking.origen.split(',');
+    const destiParts = booking.desti.split(',');
+
+    if (origenParts.length !== 2 || destiParts.length !== 2) return;
+
+    const latOrigen = parseFloat(origenParts[0]);
+    const lngOrigen = parseFloat(origenParts[1]);
+    const latDesti = parseFloat(destiParts[0]);
+    const lngDesti = parseFloat(destiParts[1]);
+
+    if (isNaN(latOrigen) || isNaN(lngOrigen) || isNaN(latDesti) || isNaN(lngDesti)) return;
+
+    const origenPos = new google.maps.LatLng(latOrigen, lngOrigen);
+    const destiPos = new google.maps.LatLng(latDesti, lngDesti);
+
+    const directionsService = new google.maps.DirectionsService();
+
+    directionsService.route({
+      origin: origenPos,
+      destination: destiPos,
+      travelMode: google.maps.TravelMode.DRIVING
+    }, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK && result) {
+        const distMetres = result.routes[0].legs[0].distance?.value || 0;
+        booking.distanciaKm = +(distMetres / 1000).toFixed(2);
+
+        // Recalcula el precio usando el mètode que ya tienes
+        this.calcularTotalReserva(booking);
+      } else {
+        console.error('Error calculando ruta:', status);
+      }
+    });
   }
 
 }

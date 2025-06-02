@@ -45,6 +45,10 @@ export class LoginComponent {
   goToRegister() {
     this.router.navigate(['/register']);
   }
+
+  goToHotels(): void {
+    this.router.navigate(['/hotels']);
+  }
 }
 
 

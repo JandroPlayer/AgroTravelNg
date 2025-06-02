@@ -5,7 +5,6 @@ import { HotelDetailComponent } from './components/hotel-detail/hotel-detail.com
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
-import {BookingComponent} from './components/booking/booking.component';
 import {AutobusesComponent} from './components/autobuses/autobuses.component';
 import {TaxisComponent} from './components/taxis/taxis.component';
 import {BusMapComponent} from './components/busmap/bus-map.component';
@@ -23,26 +22,24 @@ import {AuthGuard} from './services/auth.guard';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'hotels', component: HotelListComponent, canActivate: [AuthGuard] },
+  { path: 'hotels', component: HotelListComponent },
   { path: 'hotel/:id', component: HotelDetailComponent, canActivate: [AuthGuard] },
   { path: 'users/:id', component: UserDetailComponent, canActivate: [AuthGuard] },
-  { path: 'reserva', component: BookingComponent, canActivate: [AuthGuard] },
-  { path: 'reserva/:id', component: BookingComponent, canActivate: [AuthGuard] },
   { path: 'reservautobus/:id', component: ReservaAutobusComponent, canActivate: [AuthGuard] },
   { path: 'reservataxi/:id', component: ReservaTaxiComponent, canActivate: [AuthGuard] },
-  { path: 'autobuses', component: AutobusesComponent, canActivate: [AuthGuard] },
-  { path: 'taxis', component: TaxisComponent, canActivate: [AuthGuard] },
-  { path: 'busmap', component: BusMapComponent, canActivate: [AuthGuard] },
+  { path: 'autobuses', component: AutobusesComponent },
+  { path: 'taxis', component: TaxisComponent },
+  { path: 'busmap', component: BusMapComponent, canActivate: [AuthGuard]},
   { path: 'activitats', component: ActivitatsComponent, canActivate: [AuthGuard] },
-  { path: 'gastronomia', component: GastronomiaComponent, canActivate: [AuthGuard] },
-  { path: 'noticias', component: NoticiesComponent, canActivate: [AuthGuard] },
+  { path: 'gastronomia', component: GastronomiaComponent },
+  { path: 'noticias', component: NoticiesComponent },
   { path: 'admin/users', component: AdminUsersComponent, canActivate: [AuthGuard] },
   { path: 'admin/reserves', component: AdminReservesComponent, canActivate: [AuthGuard] },
   // Rutas dropdown
   { path: 'users/:id/favoritos', component: FavoritosComponent, canActivate: [AuthGuard] },
   { path: 'users/:id/bookings', component: BookingListComponent, canActivate: [AuthGuard] },
 
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: '', redirectTo: '/hotels', pathMatch: 'full' }
 ];
 
 @NgModule({

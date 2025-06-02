@@ -44,29 +44,33 @@
 
           <!-- Imatge amb placeholder, mida fixa i carregament vagarós -->
           <div class="col-md-4 text-center p-2" *ngIf="hotel.imageUrl">
-            <div style="width: 100%; height: 250px; position: relative;">
-              <img
-                [src]="hotel.imageUrl"
-                [alt]="hotel.name"
-                class="img-fluid rounded-start shadow-sm object-fit-cover"
-                [style.objectFit]="'cover'"
-                style="width: 100%; height: 100%;"
-                (load)="hotel.loaded = true"
-                [hidden]="!hotel.loaded"
-              />
-
-              <!-- Spinner mentre es carrega -->
-              <div *ngIf="!hotel.loaded" class="d-flex align-items-center justify-content-center"
-                   style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f0f0f0;">
-                <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
+            <a [routerLink]="['/hotel', hotel.id]" style="text-decoration: none;">
+              <div style="width: 100%; height: 250px; position: relative;">
+                <img
+                  [src]="hotel.imageUrl"
+                  [alt]="hotel.name"
+                  class="img-fluid rounded-start shadow-sm object-fit-cover"
+                  [style.objectFit]="'cover'"
+                  style="width: 100%; height: 100%;"
+                  (load)="hotel.loaded = true"
+                  [hidden]="!hotel.loaded"
+                />
+                <div *ngIf="!hotel.loaded" class="d-flex align-items-center justify-content-center"
+                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f0f0f0;">
+                  <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
 
           <!-- Dades a la dreta -->
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title text-center">{{ hotel.name }}</h5>
+              <h5 class="card-title text-center">
+                <a [routerLink]="['/hotel', hotel.id]" style="text-decoration: none; color: inherit;">
+                  {{ hotel.name }}
+                </a>
+              </h5>
 
               <p class="card-text">
                 <strong>Direcció:</strong> {{ hotel.address }} <br>
@@ -103,7 +107,7 @@
 
               <!-- Botons Inferiors -->
               <div class="d-flex justify-content-between mt-3">
-                <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary btn-sm">👁️ Veure detalls</a>
+                <a [routerLink]="['/hotel', hotel.id]" class="btn btn-primary btn-sm">📅 Reservar</a>
 
                 <button (click)="addFavorite(hotel.id)" class="btn btn-outline-danger btn-sm">
                   ❤️ Afegir a Favorits
